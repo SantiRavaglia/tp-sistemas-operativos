@@ -25,6 +25,8 @@ private:
     //...
     //
 
+    mutex m_turno;
+
     // Métodos privados
     color obtener_coordenadas(coordenadas coord);
     void mover_jugador_tablero(coordenadas pos_anterior, coordenadas pos_nueva, color colorEquipo);

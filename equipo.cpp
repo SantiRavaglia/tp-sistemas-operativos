@@ -4,10 +4,8 @@
 direccion Equipo::apuntar_a(coordenadas pos1, coordenadas pos2) {
 	if (pos2.first > pos1.first) return ABAJO;
 	if (pos2.first < pos1.first) return ARRIBA;
-	if (pos2.second > pos1.second) 
-		return DERECHA;
-	else (pos2.second < pos1.second) 
-		return IZQUIERDA;
+	if (pos2.second > pos1.second) return DERECHA;
+	else if (pos2.second < pos1.second) return IZQUIERDA;
 }
 
 
