@@ -18,8 +18,8 @@ void Equipo::jugador(int nro_jugador) {
 		switch(this->strat) {
 			//SECUENCIAL,RR,SHORTEST,USTEDES
 			case(SECUENCIAL):
-				//
-				// ...
+				// 
+				// 
 				//
 				break;
 			
