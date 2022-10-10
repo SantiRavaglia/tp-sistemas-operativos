@@ -107,17 +107,17 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 	}
 	switch (dir) {
 		case ARRIBA: 
-			if (this->turno == ROJO && this->en_posicion(make_pair(posicion_jugador.first+1, posicion_jugador.second)) == BANDERA_AZUL && es_color_libre(en_posicion(make_pair(posicion_jugador.first+1, posicion_jugador.second)))) {
+			if (this->turno == ROJO && en_posicion(proxima_posicion(posicion_jugador, ARRIBA)) == BANDERA_AZUL && es_color_libre(en_posicion(proxima_posicion(posicion_jugador, ARRIBA)))) {
 				// SI ES TURNO DEL ROJO Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA AZUL, ME MUEVO
-				mover_jugador_tablero(posicion_jugador, make_pair(posicion_jugador.first+1, posicion_jugador.second), ROJO);
-				if (this->en_posicion(make_pair(posicion_jugador.first+1, posicion_jugador.second)) == BANDERA_AZUL) {
-					this->ganador = ROJO;
+				mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, ARRIBA), ROJO);
+				if (en_posicion(proxima_posicion(posicion_jugador, ARRIBA)) == BANDERA_AZUL) {
+					ganador = ROJO;
 				}
-			} else if (this->turno == AZUL && this->en_posicion(make_pair(posicion_jugador.first+1, posicion_jugador.second)) == BANDERA_ROJA && es_color_libre(en_posicion(make_pair(posicion_jugador.first+1, posicion_jugador.second)))) { 
+			} else if (this->turno == AZUL && en_posicion(proxima_posicion(posicion_jugador, ARRIBA)) == BANDERA_ROJA && es_color_libre(en_posicion(proxima_posicion(posicion_jugador, ARRIBA)))) { 
 				// SI ES TURNO DEL AZUL Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA ROJO, ME MUEVO
-				mover_jugador_tablero(posicion_jugador, make_pair(posicion_jugador.first+1, posicion_jugador.second), AZUL);
-				if (this->en_posicion(make_pair(posicion_jugador.first+1, posicion_jugador.second)) == BANDERA_ROJA) {
-					this->ganador = AZUL;
+				mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, ARRIBA), AZUL);
+				if (en_posicion(proxima_posicion(posicion_jugador, ARRIBA)) == BANDERA_ROJA) {
+					ganador = AZUL;
 				} else {
 					// NO PUEDO MOVERME
 					return -1;
@@ -127,17 +127,17 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 		break;
 
 		case ABAJO: 
-			if (this->turno == ROJO && this->en_posicion(make_pair(posicion_jugador.first-1, posicion_jugador.second)) == BANDERA_AZUL && es_color_libre(en_posicion(make_pair(posicion_jugador.first-1, posicion_jugador.second)))) {
+			if (this->turno == ROJO && en_posicion(proxima_posicion(posicion_jugador, ABAJO)) == BANDERA_AZUL && es_color_libre(en_posicion(proxima_posicion(posicion_jugador, ABAJO)))) {
 				// SI ES TURNO DEL ROJO Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA AZUL, ME MUEVO
-				mover_jugador_tablero(posicion_jugador, make_pair(posicion_jugador.first-1, posicion_jugador.second), ROJO);
-				if (this->en_posicion(make_pair(posicion_jugador.first+1, posicion_jugador.second)) == BANDERA_AZUL) {
-					this->ganador = ROJO;
+				mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, ABAJO), ROJO);
+				if (en_posicion(proxima_posicion(posicion_jugador, ABAJO)) == BANDERA_AZUL) {
+					ganador = ROJO;
 				}
-			} else if (this->turno == AZUL && this->en_posicion(make_pair(posicion_jugador.first-1, posicion_jugador.second)) == BANDERA_ROJA && es_color_libre(en_posicion(make_pair(posicion_jugador.first-1, posicion_jugador.second)))) { 
+			} else if (this->turno == AZUL && en_posicion(proxima_posicion(posicion_jugador, ABAJO)) == BANDERA_ROJA && es_color_libre(en_posicion(proxima_posicion(posicion_jugador, ABAJO)))) { 
 				// SI ES TURNO DEL AZUL Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA ROJO, ME MUEVO
-				mover_jugador_tablero(posicion_jugador, make_pair(posicion_jugador.first-1, posicion_jugador.second), AZUL);
-				if (this->en_posicion(make_pair(posicion_jugador.first+1, posicion_jugador.second)) == BANDERA_ROJA) {
-					this->ganador = AZUL;
+				mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, ABAJO), AZUL);
+				if (en_posicion(proxima_posicion(posicion_jugador, ABAJO)) == BANDERA_ROJA) {
+					ganador = AZUL;
 				} else { 
 					// NO PUEDO MOVERME
 					return -1;
@@ -147,17 +147,17 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 		break;
 
 		case IZQUIERDA: 
-			if (this->turno == ROJO && this->en_posicion(make_pair(posicion_jugador.first, posicion_jugador.second-1)) == BANDERA_AZUL && es_color_libre(en_posicion(make_pair(posicion_jugador.first, posicion_jugador.second-1)))) {
+			if (this->turno == ROJO && en_posicion(proxima_posicion(posicion_jugador, IZQUIERDA)) == BANDERA_AZUL && es_color_libre(en_posicion(proxima_posicion(posicion_jugador, IZQUIERDA)))) {
 				// SI ES TURNO DEL ROJO Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA AZUL, ME MUEVO
-				mover_jugador_tablero(posicion_jugador, make_pair(posicion_jugador.first, posicion_jugador.second-1), ROJO);
-				if (this->en_posicion(make_pair(posicion_jugador.first+1, posicion_jugador.second)) == BANDERA_AZUL) {
-					this->ganador = ROJO;
+				mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, IZQUIERDA), ROJO);
+				if (en_posicion(proxima_posicion(posicion_jugador, IZQUIERDA)) == BANDERA_AZUL) {
+					ganador = ROJO;
 				}
-			} else if (this->turno == AZUL && this->en_posicion(make_pair(posicion_jugador.first, posicion_jugador.second-1)) == BANDERA_ROJA && es_color_libre(en_posicion(make_pair(posicion_jugador.first, posicion_jugador.second-1)))) { 
+			} else if (this->turno == AZUL && en_posicion(proxima_posicion(posicion_jugador, IZQUIERDA)) == BANDERA_ROJA && es_color_libre(en_posicion(proxima_posicion(posicion_jugador, IZQUIERDA)))) { 
 				// SI ES TURNO DEL AZUL Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA ROJO, ME MUEVO
-				mover_jugador_tablero(posicion_jugador, make_pair(posicion_jugador.first, posicion_jugador.second-1), AZUL);
-				if (this->en_posicion(make_pair(posicion_jugador.first+1, posicion_jugador.second)) == BANDERA_ROJA) {
-					this->ganador = AZUL;
+				mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, IZQUIERDA), AZUL);
+				if (en_posicion(proxima_posicion(posicion_jugador, IZQUIERDA)) == BANDERA_ROJA) {
+					ganador = AZUL;
 				} else {
 					// NO PUEDO MOVERME
 					return -1;
@@ -167,17 +167,17 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 		break;
 
 		case DERECHA: 
-			if (this->turno == ROJO && this->en_posicion(make_pair(posicion_jugador.first, posicion_jugador.second+1)) == BANDERA_AZUL && es_color_libre(en_posicion(make_pair(posicion_jugador.first, posicion_jugador.second+1)))) {
+			if (this->turno == ROJO && en_posicion(proxima_posicion(posicion_jugador, DERECHA)) == BANDERA_AZUL && es_color_libre(en_posicion(proxima_posicion(posicion_jugador, DERECHA)))) {
 				// SI ES TURNO DEL ROJO Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA AZUL, ME MUEVO
-				mover_jugador_tablero(posicion_jugador, make_pair(posicion_jugador.first, posicion_jugador.second+1), ROJO);
-				if (this->en_posicion(make_pair(posicion_jugador.first+1, posicion_jugador.second)) == BANDERA_AZUL) {
-					this->ganador = ROJO;
+				mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, DERECHA), ROJO);
+				if (en_posicion(proxima_posicion(posicion_jugador, DERECHA)) == BANDERA_AZUL) {
+					ganador = ROJO;
 				}
-			} else if (this->turno == AZUL && this->en_posicion(make_pair(posicion_jugador.first, posicion_jugador.second+1)) == BANDERA_ROJA && es_color_libre(en_posicion(make_pair(posicion_jugador.first, posicion_jugador.second+1)))) { 
+			} else if (this->turno == AZUL && en_posicion(proxima_posicion(posicion_jugador, DERECHA)) == BANDERA_ROJA && es_color_libre(en_posicion(proxima_posicion(posicion_jugador, DERECHA)))) { 
 				// SI ES TURNO DEL AZUL Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA ROJO, ME MUEVO
-				mover_jugador_tablero(posicion_jugador, make_pair(posicion_jugador.first, posicion_jugador.second+1), AZUL);
-				if (this->en_posicion(make_pair(posicion_jugador.first+1, posicion_jugador.second)) == BANDERA_ROJA) {
-					this->ganador = AZUL;
+				mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, DERECHA), AZUL);
+				if (en_posicion(proxima_posicion(posicion_jugador, DERECHA)) == BANDERA_ROJA) {
+					ganador = AZUL;
 				} else {
 					// NO PUEDO MOVERME
 					return -1;
@@ -196,7 +196,16 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 
 void gameMaster::termino_ronda(color equipo) {
 	// FIXME: Hacer chequeo de que es el color correcto que está llamando
+	assert(equipo == this->turno);
 	// FIXME: Hacer chequeo que hayan terminado todos los jugadores del equipo o su quantum (via mover_jugador)
+    assert((turno == ROJO && quantum_rojo == 0) || (turno == AZUL && quantum_azul == 0));
+	assert(turno == ROJO || turno == AZUL);
+	
+	if(turno == ROJO) {
+		turno = AZUL;
+	} else if (turno == AZUL) {
+		turno = ROJO;
+	}
 }
 
 bool gameMaster::termino_juego() {

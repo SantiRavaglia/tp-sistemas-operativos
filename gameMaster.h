@@ -44,6 +44,8 @@ public:
     //...
     //
 
+    int quantum_rojo, quantum_azul;
+
     // Métodos públicos
     bool termino_juego();
 	int getTamx();
