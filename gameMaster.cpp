@@ -99,7 +99,6 @@ void gameMaster::mover_jugador_tablero(coordenadas pos_anterior, coordenadas pos
 
 
 int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
-	this->m_turno.lock();
 	// Chequear que la movida sea valida
 	int movimiento_valido = 0;
 	coordenadas posicion_jugador;
@@ -192,7 +191,6 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 	// Que no se puedan mover 2 jugadores a la vez
     // setear la variable ganador
     // Devolver acorde a la descripción
-	this->m_turno.unlock();
 	return movimiento_valido;
 }
 
@@ -201,15 +199,15 @@ void gameMaster::termino_ronda(color equipo) {
 	// FIXME: Hacer chequeo de que es el color correcto que está llamando
 	assert(equipo == this->turno);
 	// FIXME: Hacer chequeo que hayan terminado todos los jugadores del equipo o su quantum (via mover_jugador)
-    assert((turno == ROJO && quantum_rojo == 0) || (turno == AZUL && quantum_azul == 0));
-	assert(turno == ROJO || turno == AZUL);
+    assert((this->turno == ROJO && quantum_rojo == 0) || (this->turno == AZUL && quantum_azul == 0));
+	assert(this->turno == ROJO || this->turno == AZUL);
 	
-	if(turno == ROJO) {
-		turno = AZUL;
+	if(this->turno == ROJO) {// Hay que meter algun UNLOCK aca del m_turno
+		this->turno = AZUL;
 		sem_post(&turno_azul); //pongo en verde el semaforo azul 
 		sem_wait(&turno_rojo); //este semaforo no deberia ir aca, estoy pensando en donde deberia ir!!
-	} else if (turno == AZUL) {
-		turno = ROJO;
+	} else if (this->turno == AZUL) {
+		this->turno = ROJO;
 		sem_post(&turno_rojo);
 		sem_wait(&turno_azul);
 	}
@@ -241,3 +239,10 @@ coordenadas gameMaster::proxima_posicion(coordenadas anterior, direccion movimie
 	return anterior; // está haciendo una copia por constructor
 }
 
+void gameMaster::update_quatum(int quantum_actual, color equipo_actual) {
+	if (equipo_actual == ROJO) {
+		this->quantum_rojo = quantum_actual;
+	} else {
+		this->quantum_azul = quantum_actual;
+	}
+}

@@ -25,7 +25,7 @@ private:
     //...
     //
 
-    mutex m_turno;
+    int quantum_rojo, quantum_azul;
 
     // Métodos privados
     color obtener_coordenadas(coordenadas coord);
@@ -39,19 +39,20 @@ public:
     gameMaster(Config config);
     void termino_ronda(color equipo); // Marca que un jugador terminó la ronda
     int mover_jugador(direccion dir, int nro_jugador);
-    color ganador = INDEFINIDO;
+    color ganador = INDEFINIDO;    
+    sem_t turno_rojo, turno_azul; // FIXME: Al principio necesito entrar como azul, luego puedo hacerlo por el método termino_ronda....
+
     //
     //...
     //
 
-    int quantum_rojo, quantum_azul;
+    mutex m_turno;
 
     // Métodos públicos
     bool termino_juego();
 	int getTamx();
 	int getTamy();
     static int distancia(coordenadas pair1, coordenadas pair2);
-    sem_t turno_rojo, turno_azul; // FIXME: Al principio necesito entrar como azul, luego puedo hacerlo por el método termino_ronda....
     color en_posicion(coordenadas coord);
     bool es_posicion_valida(coordenadas pos);
     bool es_color_libre(color color_tablero);
@@ -59,6 +60,8 @@ public:
     //
     //...
     //
+
+    void update_quatum(int quantum_actual, color equipo_actual);
 };
 
 #endif // GAMEMASTER_H
