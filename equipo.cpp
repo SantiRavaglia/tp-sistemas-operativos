@@ -1,6 +1,7 @@
 #include "equipo.h"
 #include <assert.h>     /* assert */
 #include "definiciones.h"
+#include <barrier>
 
 direccion Equipo::apuntar_a(coordenadas pos1, coordenadas pos2) {
 	if (pos2.first > pos1.first) return ABAJO;
@@ -163,6 +164,9 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	//
 	// ...
 	//
+
+	barrier barrera_aux(this->cant_jugadores);
+	this->barrera_sec = barrera_aux;
 
 
 	if (strat == SHORTEST) {

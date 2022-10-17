@@ -26,6 +26,8 @@ class Equipo {
 		// ...
 		//
 
+		barrier barrera_sec(1);
+
 		// Métodos privados 
 		direccion apuntar_a(coordenadas pos2, coordenadas pos1);
 		void jugador(int nro_jugador);
