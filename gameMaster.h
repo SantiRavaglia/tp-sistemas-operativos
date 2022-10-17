@@ -61,7 +61,7 @@ public:
     //...
     //
 
-    void update_quatum(int quantum_actual, color equipo_actual);
+    void update_quantum(int quantum_actual, color equipo_actual);
 };
 
 #endif // GAMEMASTER_H

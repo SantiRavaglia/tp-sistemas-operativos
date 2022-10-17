@@ -14,6 +14,22 @@ void Equipo::jugador(int nro_jugador) {
 	//
 	// ...
 	//
+	while(pos_bandera_contraria == make_pair(-1,-1)){
+		int tamX = this->belcebu->getTamx();
+		int tamY = this->belcebu->getTamy();
+		int cantCasillas = (tamX * tamY)/cant_jugadores;
+		int casillaInicio = cantCasillas * nro_jugador;
+		// Que hacer si la division del tablero da un numero con coma?
+		buscar_bandera_contraria(casillaInicio, cantCasillas);
+		
+		// Dividir el tablero
+		
+		// Mandar a buscar la bandera
+
+	}
+
+
+
 
 	while(!this->belcebu->termino_juego()) { // Chequear que no haya una race condition en gameMaster
 		switch(this->strat) {
@@ -24,7 +40,7 @@ void Equipo::jugador(int nro_jugador) {
 					this->belcebu->termino_ronda(this->equipo); //HAY QUE DESBLOQUEAR EL MUTEX
 					// Hay que refreshear el quantum/jugadores que ya jugaron al principio de la ronda
 				} else {
-					this->belcebu->mover_jugador(apuntar_a(), nro_jugador);
+					this->belcebu->mover_jugador(apuntar_a(posiciones[nro_jugador], pos_bandera_contraria),nro_jugador);
 					cant_jugadores_que_ya_jugaron++;
 				}
 				this->belcebu->m_turno.unlock();
@@ -32,11 +48,17 @@ void Equipo::jugador(int nro_jugador) {
 			
 			case(RR):
 			// Quizas vaya aca el semaforo y la resta de quantum donde va?
-				this->belcebu->mover_jugador("DIRECCION", nro_jugador);
+				this->belcebu->m_turno.lock();
 				if(quantum_restante == 0){
 					quantum_restante = quantum;
 					this->belcebu->termino_ronda(this->equipo);
+				} else {
+					int jugador_a_mover = cant_jugadores_que_ya_jugaron % cant_jugadores;
+					this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], pos_bandera_contraria),jugador_a_mover);
+					cant_jugadores_que_ya_jugaron++;
+					quantum_restante--;
 				}
+				this->belcebu->m_turno.unlock();
 				break;
 
 			case(SHORTEST):
@@ -48,8 +70,8 @@ void Equipo::jugador(int nro_jugador) {
 				break;
 
 			case(USTEDES):
-				//
-				// ...
+				// La idea es hacer un Round robin combinado con shortest, cuando el quantum es mayor a la cantidad de jugadores 
+				// movemos primero una vez a cada jugador y con el quantum restante movemos al jugador mas cercano a la bandera
 				//
 				break;
 			default:
@@ -97,27 +119,34 @@ void Equipo::terminar() {
 	}	
 }
 
-coordenadas Equipo::buscar_bandera_contraria() {
-	//
-	// ...
-	//
-
-	assert(this->equipo == ROJO && this->equipo == AZUL);
-
-	int tamanoX = this->belcebu->getTamy();
-	coordenadas seek;
-
-	if (this->equipo = ROJO) {
-		seek = make_pair(tamanoX-1, 0);
-	} else {
-		seek = make_pair(1, 0);
-	} 
-	
-	for (int i = 0; i < tamanoX; i++) {
-		
-		this->belcebu->en_posicion(seek);
+coordenadas Equipo::buscar_bandera_contraria(int casillaInicio, int cantCasillas) {
+	int tamX = this->belcebu->getTamx();
+	int tamY = this->belcebu->getTamy();
+	int filaInicial = casillaInicio/tamX;
+	int columnaInicial = casillaInicio % tamX;
+	int casillaFinal = casillaInicio + cantCasillas;
+	int filaFinal = casillaInicio/tamX;
+	int columnaFinal = casillaInicio % tamX;
+	bool primeraIteracion = true;
+	for (int i = filaInicial; i <= filaFinal; i++){
+		// Tengo que llamar en la primera iteracion desde la columna en la que empiece
+		// y en la ultima iteracion de la columna en la que termino
+		int inicio = 0;
+		int fin = tamX - 1;
+		if (i == filaFinal) fin = columnaFinal; // Ultima fila solo iteramos hasta la columnaFinal del jugador
+		if (primeraIteracion) inicio = columnaInicial;
+		for (int j = inicio ; j <= fin; j++){
+			if(this->belcebu->en_posicion(make_pair(i,j)) == bandera_contraria){
+				pos_bandera_contraria = make_pair(i,j);
+			};
+		}
+		primeraIteracion = false;
 	}
-
+	/*
+	FALTA FIJARSE:
+	- Si puedo asignar la bandera del equipo contraria asi nomas o tengo que devolverla al jugador y eso pasarla al belcebu
+	- Agregar algun flag para cortar la iteracion en todos los demas jugadores?
+	*/
 }
 /*
 4. Defina el metodo coordenadas Equipo::buscar bandera contraria() de la clase equipo donde los jugadores se

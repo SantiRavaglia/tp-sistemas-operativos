@@ -28,7 +28,7 @@ class Equipo {
 		// Métodos privados 
 		direccion apuntar_a(coordenadas pos2, coordenadas pos1);
 		void jugador(int nro_jugador);
-		coordenadas buscar_bandera_contraria();
+		coordenadas buscar_bandera_contraria(int casillaInicio, int cantCasillas);
 		//
 		// ...
 		//
