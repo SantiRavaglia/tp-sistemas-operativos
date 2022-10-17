@@ -205,12 +205,10 @@ void gameMaster::termino_ronda(color equipo) {
 	if(this->turno == ROJO) {// Hay que meter algun UNLOCK aca del m_turno
 		this->turno = AZUL;
 		sem_post(&turno_azul); //pongo en verde el semaforo azul 
-		this->m_turno.unlock();
 		sem_wait(&turno_rojo); //este semaforo no deberia ir aca, estoy pensando en donde deberia ir!!
 	} else if (this->turno == AZUL) {
 		this->turno = ROJO;
 		sem_post(&turno_rojo);		
-		this->m_turno.unlock();
 		sem_wait(&turno_azul);
 	}
 }

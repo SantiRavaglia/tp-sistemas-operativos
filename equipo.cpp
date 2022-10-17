@@ -44,9 +44,9 @@ void Equipo::jugador(int nro_jugador) {
 				} else {
 					this->belcebu->mover_jugador(apuntar_a(this->posiciones[nro_jugador], this->pos_bandera_contraria),nro_jugador);
 					this->cant_jugadores_que_ya_jugaron++;
-					this->belcebu->m_turno.unlock();
-					//barrera.wait()
+					this->barrera_jugadores.wait();
 				}
+				this->belcebu->m_turno.unlock();
 				break;
 			
 			case(RR):
@@ -63,7 +63,7 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
-							//barrera_cant_jugadores.wait()
+							this->barrera_jugadores.wait();
 						}
 					} else {
 						if(this->quantum_restante == 0){
@@ -74,7 +74,7 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
-							//barrera_quantum.wait()
+							this->barrera_jugadores.wait();
 						}
 					}
 				}
@@ -112,7 +112,7 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
-							//barrera_cant_jugadores.wait()
+							this->barrera_jugadores.wait();
 						}
 					} else {
 						if(this->quantum_restante == 0){
@@ -130,7 +130,7 @@ void Equipo::jugador(int nro_jugador) {
 								this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 								this->cant_jugadores_que_ya_jugaron++;
 								this->quantum_restante--;
-								//barrera_quantum.wait()
+								this->barrera_jugadores.wait();
 							}
 						}
 					}
@@ -164,8 +164,8 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	// ...
 	//
 
-	barrier barrera_aux(this->cant_jugadores);
-	this->barrera_sec = barrera_aux;
+	barrera b_aux(this->cant_jugadores);
+	this->barrera_jugadores = b_aux;
 	
 
 	if (strat == SHORTEST) {
