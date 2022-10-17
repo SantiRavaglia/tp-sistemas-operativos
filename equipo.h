@@ -6,6 +6,7 @@
 #include <thread>
 #include "definiciones.h"
 #include "gameMaster.h"
+#include <barrier>
 
 using namespace std;
 
