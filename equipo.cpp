@@ -39,14 +39,14 @@ void Equipo::jugador(int nro_jugador) {
 				if (this->cant_jugadores_que_ya_jugaron == this->cant_jugadores) {
 					this->cant_jugadores_que_ya_jugaron = 0; //reinicio los valores
 					this->quantum_restante = this->quantum;
-					this->belcebu->termino_ronda(this->equipo); //HAY QUE DESBLOQUEAR EL MUTEX
+					this->belcebu->termino_ronda(this->equipo); 
 					// Hay que refreshear el quantum/jugadores que ya jugaron al principio de la ronda
 				} else {
 					this->belcebu->mover_jugador(apuntar_a(this->posiciones[nro_jugador], this->pos_bandera_contraria),nro_jugador);
 					this->cant_jugadores_que_ya_jugaron++;
+					this->belcebu->m_turno.unlock();
 					//barrera.wait()
 				}
-				this->belcebu->m_turno.unlock();
 				break;
 			
 			case(RR):
