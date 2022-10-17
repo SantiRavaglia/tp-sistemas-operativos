@@ -1,7 +1,10 @@
 #include "equipo.h"
 #include <assert.h>     /* assert */
 #include "definiciones.h"
-#include <barrier>
+#include <cmath>
+#include "barrera.h"
+
+using namespace std;
 
 direccion Equipo::apuntar_a(coordenadas pos1, coordenadas pos2) {
 	if (pos2.first > pos1.first) return ABAJO;
@@ -12,24 +15,20 @@ direccion Equipo::apuntar_a(coordenadas pos1, coordenadas pos2) {
 
 
 void Equipo::jugador(int nro_jugador) {
-	//
-	// ...
-	//
+
 	while(pos_bandera_contraria == make_pair(-1,-1)){
 		int tamX = this->belcebu->getTamx();
 		int tamY = this->belcebu->getTamy();
-		int cantCasillas = (tamX * tamY)/cant_jugadores;
+		//Que hacer si la division del tablero da un numero con coma?
+		//Redondeo para arriba y algunos jugadores revisas la misma casilla a veces
+		int cantCasillas = (int)ceil((float)(tamX * tamY)/(float)this->cant_jugadores);
 		int casillaInicio = cantCasillas * nro_jugador;
-		// Que hacer si la division del tablero da un numero con coma?
+		// Si algun jugador se pasa del limite del tablero le asignamos tamaño - 1 a su limite
+		if (casillaInicio+cantCasillas >= tamX*tamY){
+			cantCasillas = tamX*tamY - casillaInicio - 1;
+		}
 		buscar_bandera_contraria(casillaInicio, cantCasillas);
-		
-		// Dividir el tablero
-		
-		// Mandar a buscar la bandera
-
 	}
-
-
 
 
 	while(!this->belcebu->termino_juego()) { // Chequear que no haya una race condition en gameMaster
@@ -167,7 +166,7 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 
 	barrier barrera_aux(this->cant_jugadores);
 	this->barrera_sec = barrera_aux;
-
+	
 
 	if (strat == SHORTEST) {
 		this->buscar_bandera_contraria_single_thread();

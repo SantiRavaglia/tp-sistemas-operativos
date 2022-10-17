@@ -29,7 +29,7 @@ int main(){
     rojo.comenzar();
     azul.comenzar();
 	rojo.terminar();
-	azul.terminar();	
+	azul.terminar();
     //belcebu.play();
 
     cout << "Bandera capturada por el equipo "<< belcebu.ganador << ". Felicidades!" << endl;
