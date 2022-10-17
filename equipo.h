@@ -29,6 +29,8 @@ class Equipo {
 		direccion apuntar_a(coordenadas pos2, coordenadas pos1);
 		void jugador(int nro_jugador);
 		coordenadas buscar_bandera_contraria(int casillaInicio, int cantCasillas);
+		coordenadas buscar_bandera_contraria_single_thread();
+		int jugador_mas_cercano();
 		//
 		// ...
 		//

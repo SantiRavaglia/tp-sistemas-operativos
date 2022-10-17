@@ -34,14 +34,15 @@ void Equipo::jugador(int nro_jugador) {
 	while(!this->belcebu->termino_juego()) { // Chequear que no haya una race condition en gameMaster
 		switch(this->strat) {
 			//SECUENCIAL,RR,SHORTEST,USTEDES
-			case(SECUENCIAL):
+			case(SECUENCIAL): // AGREGAR BARRERA: DESPUES DE MOVERSE HACE BARRERA.WAIT ASI CADA JUGADOR SE MUEVE SOLO UNA VEZ.
 				this->belcebu->m_turno.lock();
-				if (cant_jugadores_que_ya_jugaron == cant_jugadores) {
+				if (this->cant_jugadores_que_ya_jugaron == this->cant_jugadores) {
+					this->quantum_restante = this->quantum;
 					this->belcebu->termino_ronda(this->equipo); //HAY QUE DESBLOQUEAR EL MUTEX
 					// Hay que refreshear el quantum/jugadores que ya jugaron al principio de la ronda
 				} else {
-					this->belcebu->mover_jugador(apuntar_a(posiciones[nro_jugador], pos_bandera_contraria),nro_jugador);
-					cant_jugadores_que_ya_jugaron++;
+					this->belcebu->mover_jugador(apuntar_a(this->posiciones[nro_jugador], this->pos_bandera_contraria),nro_jugador);
+					this->cant_jugadores_que_ya_jugaron++;
 				}
 				this->belcebu->m_turno.unlock();
 				break;
@@ -49,14 +50,14 @@ void Equipo::jugador(int nro_jugador) {
 			case(RR):
 			// Quizas vaya aca el semaforo y la resta de quantum donde va?
 				this->belcebu->m_turno.lock();
-				if(quantum_restante == 0){
-					quantum_restante = quantum;
+				if(this->quantum_restante == 0){
+					this->quantum_restante = this->quantum;
 					this->belcebu->termino_ronda(this->equipo);
 				} else {
-					int jugador_a_mover = cant_jugadores_que_ya_jugaron % cant_jugadores;
-					this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], pos_bandera_contraria),jugador_a_mover);
-					cant_jugadores_que_ya_jugaron++;
-					quantum_restante--;
+					int jugador_a_mover = this->cant_jugadores_que_ya_jugaron % this->cant_jugadores;
+					this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
+					this->cant_jugadores_que_ya_jugaron++;
+					this->quantum_restante--;
 				}
 				this->belcebu->m_turno.unlock();
 				break;
@@ -65,8 +66,11 @@ void Equipo::jugador(int nro_jugador) {
 			// 	Tengo que ver de donde saco la dist a la bandera
 			// Si es un movimiento random o hacia la bandera 
 			// Si esta es la strat tengo que asegurarme de llamar al de menor dist
-				this->belcebu->mover_jugador("DIRECCION", nro_jugador);
+				this->belcebu->m_turno.lock();
+				int jugador_cercano = this->jugador_mas_cercano(); 
+				this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
 				this->belcebu->termino_ronda(this->equipo);
+				this->belcebu->m_turno.unlock();
 				break;
 
 			case(USTEDES):
@@ -100,6 +104,13 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	//
 	// ...
 	//
+
+
+	if (strat == SHORTEST) {
+		this->buscar_bandera_contraria_single_thread();
+	}
+
+
 }
 
 void Equipo::comenzar() {
@@ -148,6 +159,86 @@ coordenadas Equipo::buscar_bandera_contraria(int casillaInicio, int cantCasillas
 	- Agregar algun flag para cortar la iteracion en todos los demas jugadores?
 	*/
 }
+
+int Equipo::jugador_mas_cercano() {
+	int mas_cercano = 0;
+	int distancia_minima = this->belcebu->distancia(this->pos_bandera_contraria, posiciones[0]);
+	for (int i = 1; i<cant_jugadores; i++){
+		int distancia = this->belcebu->distancia(this->pos_bandera_contraria, posiciones[i]);
+		if (distancia<distancia_minima){
+			mas_cercano = i;
+			distancia_minima = distancia;
+		}
+	}
+	return mas_cercano;
+}
+
+coordenadas Equipo::buscar_bandera_contraria_single_thread() {
+
+	int tamX = this->belcebu->getTamx();
+	int tamY = this->belcebu->getTamy();
+	int columnaInicial;
+	if (this->equipo == ROJO) {
+		columnaInicial = tamX-1;
+		for (int i = columnaInicial; i >= 0; i--) {
+			for (int j = 0; j < tamY; i++) {
+				if (this->belcebu->en_posicion(make_pair(i, j)) == BANDERA_AZUL) {
+					this->pos_bandera_contraria = make_pair(i, j);
+					break;
+				}
+			}
+			if (this->pos_bandera_contraria != make_pair(-1, -1)) {
+				break;
+			}
+		}
+	} else {
+		columnaInicial = 0;
+		for (int i = columnaInicial; i < tamX; i++) {
+			for (int j = 0; j < tamY; i++) {
+				if (this->belcebu->en_posicion(make_pair(i, j)) == BANDERA_ROJA) {
+					this->pos_bandera_contraria = make_pair(i, j);
+					break;
+				}
+			}
+			if (this->pos_bandera_contraria != make_pair(-1, -1)) {
+				break;
+			}
+		}
+	}
+
+}
+
+
+
+
+
+// coordenadas Equipo::buscar_bandera_contraria(int numJugador) { FALTA DESARROLLAR
+// 	//
+// 	// ...
+// 	//
+
+// 	assert(this->equipo == ROJO && this->equipo == AZUL);
+
+// 	int tamanoX = this->belcebu->getTamy();
+// 	coordenadas seek;
+
+// 	int cantColumnas = ceil(tamanoX / this->cant_jugadores);
+// 	pair<int,int> rangoBusqueda = make_pair(cantColumnas*numJugador, cantColumnas*(numJugador+1)-1);
+
+// 	if (this->equipo = ROJO) {
+// 		seek = make_pair(tamanoX-1, 0);
+// 	} else {
+// 		seek = make_pair(1, 0);
+// 	} 
+	
+// 	for (int i = 0; i < tamanoX; i++) {
+		
+// 		this->belcebu->en_posicion(seek);
+// 	}
+
+// }
+
+
 /*
 4. Defina el metodo coordenadas Equipo::buscar bandera contraria() de la clase equipo donde los jugadores se
 repartan el tablero y puedan buscar, de manera paralela/simuiltanea, la bandera contraria. En particular, sera de
