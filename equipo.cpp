@@ -122,7 +122,7 @@ void Equipo::jugador(int nro_jugador) {
 							this->quantum_restante = this->quantum;
 							this->belcebu->termino_ronda(this->equipo);
 						} else {
-							if (movimientos_destinados_a_shortest < this->quantum_restante){ //destino quantum - #cantidad_de_jugadores movimientos a shortest y el resto a quantum
+							if (movimientos_destinados_a_shortest >= this->quantum_restante){ //destino quantum - #cantidad_de_jugadores movimientos a shortest y el resto a quantum
 								int jugador_cercano = this->jugador_mas_cercano(); 
 								if (nro_jugador == jugador_cercano){ //podriamos llegar a implementar un else que duerma a los jugadores que no son el mas cercano, pero complicaria el codigo, puede causar deadlocks y no es mucho mas optimo
 									this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
