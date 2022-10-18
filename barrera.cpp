@@ -32,5 +32,4 @@ void barrera::wait() {
     m.unlock();
 
     sem_wait(semaforo);
-
 }

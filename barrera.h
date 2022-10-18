@@ -1,3 +1,6 @@
+// #ifndef BARRERA.H
+// #define BARRERA.H
+
 #include <semaphore.h>
 #include <mutex>
 
@@ -20,3 +23,6 @@ class barrera {
         int cant;
         int trigger;
 };
+
+
+// #endif //BARRERA.H

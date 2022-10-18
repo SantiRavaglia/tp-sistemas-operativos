@@ -26,7 +26,7 @@ class Equipo {
 		// ...
 		//
 
-		barrera barrera_jugadores;
+		barrera *barrera_jugadores = new barrera();
 
 		// Métodos privados 
 		direccion apuntar_a(coordenadas pos2, coordenadas pos1);

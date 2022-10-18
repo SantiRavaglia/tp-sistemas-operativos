@@ -2,7 +2,6 @@
 #include <assert.h>     /* assert */
 #include "definiciones.h"
 #include <cmath>
-#include "barrera.h"
 
 using namespace std;
 
@@ -34,7 +33,7 @@ void Equipo::jugador(int nro_jugador) {
 	while(!this->belcebu->termino_juego()) { // Chequear que no haya una race condition en gameMaster
 		switch(this->strat) {
 			//SECUENCIAL,RR,SHORTEST,USTEDES
-			case(SECUENCIAL): // AGREGAR BARRERA: DESPUES DE MOVERSE HACE BARRERA.WAIT ASI CADA JUGADOR SE MUEVE SOLO UNA VEZ.
+			case(SECUENCIAL): { // AGREGAR BARRERA: DESPUES DE MOVERSE HACE BARRERA.WAIT ASI CADA JUGADOR SE MUEVE SOLO UNA VEZ.
 				this->belcebu->m_turno.lock();
 				if (this->cant_jugadores_que_ya_jugaron == this->cant_jugadores) {
 					this->cant_jugadores_que_ya_jugaron = 0; //reinicio los valores
@@ -44,12 +43,13 @@ void Equipo::jugador(int nro_jugador) {
 				} else {
 					this->belcebu->mover_jugador(apuntar_a(this->posiciones[nro_jugador], this->pos_bandera_contraria),nro_jugador);
 					this->cant_jugadores_que_ya_jugaron++;
-					this->barrera_jugadores.wait();
+					(*this->barrera_jugadores).wait();
 				}
 				this->belcebu->m_turno.unlock();
 				break;
+			}
 			
-			case(RR):
+			case(RR): {
 			// Quizas vaya aca el semaforo y la resta de quantum donde va?
 				this->belcebu->m_turno.lock();
 				int jugador_a_mover = this->cant_jugadores_que_ya_jugaron % this->cant_jugadores; //si bien esta es la cuenta que se usa cuando el quantum es menor a la cantidad de jugadores, tambien sirve en el otro caso
@@ -63,7 +63,7 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
-							this->barrera_jugadores.wait();
+							(*this->barrera_jugadores).wait();
 						}
 					} else {
 						if(this->quantum_restante == 0){
@@ -74,14 +74,15 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
-							this->barrera_jugadores.wait();
+							(*this->barrera_jugadores).wait();
 						}
 					}
 				}
 				this->belcebu->m_turno.unlock();
 				break;
+			}
 
-			case(SHORTEST):
+			case(SHORTEST): {
 			// 	Tengo que ver de donde saco la dist a la bandera
 			// Si es un movimiento random o hacia la bandera 
 			// Si esta es la strat tengo que asegurarme de llamar al de menor dist
@@ -94,8 +95,9 @@ void Equipo::jugador(int nro_jugador) {
 				this->belcebu->m_turno.unlock();
 				break;
 				// hay que tener mucho cuidado con la variable nro_jugador que parece estar rota
+			}
 
-			case(USTEDES):
+			case(USTEDES): {
 				// La idea es hacer un Round robin combinado con shortest, cuando el quantum es mayor a la cantidad de jugadores 
 				// movemos primero una vez a cada jugador y con el quantum restante movemos al jugador mas cercano a la bandera
 				//
@@ -112,7 +114,7 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
-							this->barrera_jugadores.wait();
+							(*this->barrera_jugadores).wait();
 						}
 					} else {
 						if(this->quantum_restante == 0){
@@ -130,13 +132,14 @@ void Equipo::jugador(int nro_jugador) {
 								this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 								this->cant_jugadores_que_ya_jugaron++;
 								this->quantum_restante--;
-								this->barrera_jugadores.wait();
+								(*this->barrera_jugadores).wait();
 							}
 						}
 					}
 				}
 				this->belcebu->m_turno.unlock();
 				break;
+			}
 			default:
 				break;
 		}	
@@ -164,9 +167,9 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	// ...
 	//
 
-	barrera b_aux(this->cant_jugadores);
-	this->barrera_jugadores = b_aux;
-	
+	// barrera b_aux(this->cant_jugadores);
+	// this->barrera_jugadores = b_aux;
+	this->barrera_jugadores = new barrera(this->cant_jugadores);
 
 	if (strat == SHORTEST) {
 		this->buscar_bandera_contraria_single_thread();
