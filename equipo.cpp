@@ -55,7 +55,7 @@ void Equipo::jugador(int nro_jugador) {
 				int jugador_a_mover = this->cant_jugadores_que_ya_jugaron % this->cant_jugadores; //si bien esta es la cuenta que se usa cuando el quantum es menor a la cantidad de jugadores, tambien sirve en el otro caso
 				if (jugador_a_mover == nro_jugador){ //chequeo si soy el jugador que debe hacer el movimiento
 					if (this->quantum <= this->cant_jugadores){ //chequeo en cual de los dos casos estoy
-						if(this->cant_jugadores == this->cant_jugadores_que_ya_jugaron){
+						if(this->cant_jugadores == this->cant_jugadores_que_ya_jugaron){ //ya jugaron todos
 							this->cant_jugadores_que_ya_jugaron = 0; //reinicio los valores
 							this->quantum_restante = this->quantum;
 							this->belcebu->termino_ronda(this->equipo);
