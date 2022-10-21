@@ -43,7 +43,7 @@ void Equipo::jugador(int nro_jugador) {
 				} else {
 					this->belcebu->mover_jugador(apuntar_a(this->posiciones[nro_jugador], this->pos_bandera_contraria),nro_jugador);
 					this->cant_jugadores_que_ya_jugaron++;
-					(*this->barrera_jugadores).wait();
+					(this->barrera_jugadores).arrive_and_wait();
 				}
 				this->belcebu->m_turno.unlock();
 				break;
@@ -63,7 +63,7 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
-							(*this->barrera_jugadores).wait();
+							(this->barrera_jugadores).arrive_and_wait();
 						}
 					} else {
 						if(this->quantum_restante == 0){
@@ -74,7 +74,7 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
-							(*this->barrera_jugadores).wait();
+							(this->barrera_jugadores).arrive_and_wait();
 						}
 					}
 				}
@@ -114,7 +114,7 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
-							(*this->barrera_jugadores).wait();
+							(this->barrera_jugadores).arrive_and_wait();
 						}
 					} else {
 						if(this->quantum_restante == 0){
@@ -132,7 +132,7 @@ void Equipo::jugador(int nro_jugador) {
 								this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 								this->cant_jugadores_que_ya_jugaron++;
 								this->quantum_restante--;
-								(*this->barrera_jugadores).wait();
+								(this->barrera_jugadores).arrive_and_wait();
 							}
 						}
 					}
@@ -168,8 +168,9 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	//
 
 	// barrera b_aux(this->cant_jugadores);
-	// this->barrera_jugadores = b_aux;
-	this->barrera_jugadores = new barrera(this->cant_jugadores);
+	//// this->barrera_jugadores = b_aux;//
+	barrier barreraAux(this-> cant_jugadores); 
+	this->barrera_jugadores = barreraAux;
 
 	if (strat == SHORTEST) {
 		this->buscar_bandera_contraria_single_thread();
