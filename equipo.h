@@ -42,6 +42,7 @@ class Equipo {
 				estrategia strat, int cant_jugadores, int quantum, vector<coordenadas> posiciones);
 		void comenzar();
 		void terminar();
+		mutex m_turno;
 		// crear jugadores
 
 };
