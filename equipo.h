@@ -25,7 +25,7 @@ class Equipo {
 		//
 		// ...
 		//
-		barrier barrera_jugadores(1);
+		//barrier barrera_jugadores(1);
 		//barrera *barrera_jugadores = new barrera();
 
 		// Métodos privados 

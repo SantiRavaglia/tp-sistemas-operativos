@@ -4,6 +4,7 @@
 
 // SE FIJA SI LA COORDENADA ESTA DENTRO DEL TABLERO
 bool gameMaster::es_posicion_valida(coordenadas pos) {
+	//cout << "Coordenadas" << pos.first << pos.second <<  endl;
 	return (pos.first > 0) && (pos.first < x) && (pos.second > 0) && (pos.second < y);
 }
 

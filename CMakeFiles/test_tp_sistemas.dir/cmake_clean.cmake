@@ -1,8 +1,12 @@
 file(REMOVE_RECURSE
   "CMakeFiles/test_tp_sistemas.dir/config.cpp.o"
+  "CMakeFiles/test_tp_sistemas.dir/config.cpp.o.d"
   "CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o"
+  "CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o.d"
   "CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o"
+  "CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o.d"
   "CMakeFiles/test_tp_sistemas.dir/main.cpp.o"
+  "CMakeFiles/test_tp_sistemas.dir/main.cpp.o.d"
   "test_tp_sistemas"
   "test_tp_sistemas.pdb"
 )

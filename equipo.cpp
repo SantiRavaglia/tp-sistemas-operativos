@@ -2,6 +2,10 @@
 #include <assert.h>     /* assert */
 #include "definiciones.h"
 #include <cmath>
+#include <chrono>
+#include <thread>
+#include <unistd.h>
+
 
 using namespace std;
 
@@ -14,8 +18,10 @@ direccion Equipo::apuntar_a(coordenadas pos1, coordenadas pos2) {
 
 
 void Equipo::jugador(int nro_jugador) {
-
+	cout << "JUGADOR: 0 " << " EQUIPO: " << equipo << endl;
 	while(pos_bandera_contraria == make_pair(-1,-1)){
+		this_thread::sleep_for(5000ms);
+		cout << "JUGADOR: 1" << " EQUIPO: " << equipo << endl;
 		int tamX = this->belcebu->getTamx();
 		int tamY = this->belcebu->getTamy();
 		//Que hacer si la division del tablero da un numero con coma?
@@ -27,9 +33,11 @@ void Equipo::jugador(int nro_jugador) {
 			cantCasillas = tamX*tamY - casillaInicio - 1;
 		}
 		buscar_bandera_contraria(casillaInicio, cantCasillas);
+		cout << "JUGADOR: 2" << " EQUIPO: " << equipo << endl;
+			cout << "BANDERA CONTRARIA: " << pos_bandera_contraria.first << "," << pos_bandera_contraria.second << endl;
 	}
-
-
+	cout << "JUGADOR: 3" << endl;
+	cout << "BANDERA CONTRARIA: " << pos_bandera_contraria.first << "," << pos_bandera_contraria.second << endl;
 	while(!this->belcebu->termino_juego()) { // Chequear que no haya una race condition en gameMaster
 		switch(this->strat) {
 			//SECUENCIAL,RR,SHORTEST,USTEDES
@@ -45,7 +53,7 @@ void Equipo::jugador(int nro_jugador) {
 					this->belcebu->mover_jugador(apuntar_a(this->posiciones[nro_jugador], this->pos_bandera_contraria),nro_jugador);
 					this->cant_jugadores_que_ya_jugaron++;
 					m_turno.unlock();
-					(this->barrera_jugadores).arrive_and_wait();
+					//(this->barrera_jugadores).arrive_and_wait();
 				}
 				break;
 			}
@@ -64,7 +72,7 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
-							(this->barrera_jugadores).arrive_and_wait();
+							//(this->barrera_jugadores).arrive_and_wait();
 						}
 					} else {
 						if(this->quantum_restante == 0){
@@ -75,7 +83,7 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
-							(this->barrera_jugadores).arrive_and_wait();
+							//(this->barrera_jugadores).arrive_and_wait();
 						}
 					}
 				}
@@ -115,7 +123,7 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
-							(this->barrera_jugadores).arrive_and_wait();
+							//(this->barrera_jugadores).arrive_and_wait();
 						}
 					} else {
 						if(this->quantum_restante == 0){
@@ -133,7 +141,7 @@ void Equipo::jugador(int nro_jugador) {
 								this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 								this->cant_jugadores_que_ya_jugaron++;
 								this->quantum_restante--;
-								(this->barrera_jugadores).arrive_and_wait();
+								//(this->barrera_jugadores).arrive_and_wait();
 							}
 						}
 					}
@@ -164,19 +172,20 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	this->quantum_restante = quantum;
 	this->cant_jugadores = cant_jugadores;
 	this->posiciones = posiciones;
+	this->pos_bandera_contraria = make_pair(-1,-1);
 	//
 	// ...
 	//
 
 	// barrera b_aux(this->cant_jugadores);
 	//// this->barrera_jugadores = b_aux;//
-	barrier barreraAux(this-> cant_jugadores); 
-	this->barrera_jugadores = barreraAux;
+	//barrier barreraAux(this-> cant_jugadores); 
+	//this->barrera_jugadores = barreraAux;
 
-	if (strat == SHORTEST) {
+	/*if (strat == SHORTEST) {
+		cout << "3" << endl;
 		this->buscar_bandera_contraria_single_thread();
-	}
-
+	}*/
 
 }
 
@@ -184,11 +193,16 @@ void Equipo::comenzar() {
 	// Arranco cuando me toque el turno 
 	// TODO: Quien empieza ? No se si lo de abajo esta bien
 	//fsem_wait(&(belcebu->turno_rojo)); // Inicializo el rojo
-	sem_wait(&(belcebu->turno_azul)); // Pongo a esperar el azul y cuando termine el rojo va a iniciar este
+	cout << " COMENZAR: 0" << endl;
+	cout << "equipo: " << this->equipo << endl;
+	if (this->equipo == AZUL) sem_wait(&(belcebu->turno_azul)); // Pongo a esperar el azul y cuando termine el rojo va a iniciar este
+	cout << " COMENZAR: 1" << endl;	
 	// Creamos los jugadores
 	for(int i=0; i < cant_jugadores; i++) {
+		cout << "COMENZAR: 2" << endl;
 		jugadores.emplace_back(thread(&Equipo::jugador, this, i)); 
 	}
+	if (this->equipo == ROJO) sem_post(&(belcebu->turno_azul));
 }
 
 void Equipo::terminar() {
@@ -245,16 +259,22 @@ coordenadas Equipo::buscar_bandera_contraria_single_thread() {
 	int tamX = this->belcebu->getTamx();
 	int tamY = this->belcebu->getTamy();
 	int columnaInicial;
+	cout << "4" << endl;
 	if (this->equipo == ROJO) {
+		cout << "5" << endl;
 		columnaInicial = tamX-1;
 		for (int i = columnaInicial; i >= 0; i--) {
 			for (int j = 0; j < tamY; i++) {
+				cout << "6" << endl;
 				if (this->belcebu->en_posicion(make_pair(i, j)) == BANDERA_AZUL) {
 					this->pos_bandera_contraria = make_pair(i, j);
+					cout << "7" << endl;
 					break;
 				}
 			}
+			cout << "8" << endl;
 			if (this->pos_bandera_contraria != make_pair(-1, -1)) {
+				cout << "9" << endl;
 				break;
 			}
 		}
@@ -272,7 +292,6 @@ coordenadas Equipo::buscar_bandera_contraria_single_thread() {
 			}
 		}
 	}
-
 }
 
 
