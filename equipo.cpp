@@ -34,24 +34,25 @@ void Equipo::jugador(int nro_jugador) {
 		switch(this->strat) {
 			//SECUENCIAL,RR,SHORTEST,USTEDES
 			case(SECUENCIAL): { // AGREGAR BARRERA: DESPUES DE MOVERSE HACE BARRERA.WAIT ASI CADA JUGADOR SE MUEVE SOLO UNA VEZ.
-				this->belcebu->m_turno.lock();
+				m_turno.lock();
 				if (this->cant_jugadores_que_ya_jugaron == this->cant_jugadores) {
 					this->cant_jugadores_que_ya_jugaron = 0; //reinicio los valores
 					this->quantum_restante = this->quantum;
-					this->belcebu->termino_ronda(this->equipo); 
+					this->belcebu->termino_ronda(this->equipo);
+					m_turno.unlock(); 
 					// Hay que refreshear el quantum/jugadores que ya jugaron al principio de la ronda
 				} else {
 					this->belcebu->mover_jugador(apuntar_a(this->posiciones[nro_jugador], this->pos_bandera_contraria),nro_jugador);
 					this->cant_jugadores_que_ya_jugaron++;
+					m_turno.unlock();
 					(this->barrera_jugadores).arrive_and_wait();
 				}
-				this->belcebu->m_turno.unlock();
 				break;
 			}
 			
 			case(RR): {
 			// Quizas vaya aca el semaforo y la resta de quantum donde va?
-				this->belcebu->m_turno.lock();
+				m_turno.lock();
 				int jugador_a_mover = this->cant_jugadores_que_ya_jugaron % this->cant_jugadores; //si bien esta es la cuenta que se usa cuando el quantum es menor a la cantidad de jugadores, tambien sirve en el otro caso
 				if (jugador_a_mover == nro_jugador){ //chequeo si soy el jugador que debe hacer el movimiento
 					if (this->quantum <= this->cant_jugadores){ //chequeo en cual de los dos casos estoy
@@ -78,7 +79,7 @@ void Equipo::jugador(int nro_jugador) {
 						}
 					}
 				}
-				this->belcebu->m_turno.unlock();
+				m_turno.unlock();
 				break;
 			}
 
@@ -86,13 +87,13 @@ void Equipo::jugador(int nro_jugador) {
 			// 	Tengo que ver de donde saco la dist a la bandera
 			// Si es un movimiento random o hacia la bandera 
 			// Si esta es la strat tengo que asegurarme de llamar al de menor dist
-				this->belcebu->m_turno.lock();
+				m_turno.lock();
 				int jugador_cercano = this->jugador_mas_cercano(); 
 				if (nro_jugador == jugador_cercano){ //podriamos llegar a implementar un else que duerma a los jugadores que no son el mas cercano, pero complicaria el codigo, puede causar deadlocks y no es mucho mas optimo
 					this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
 					this->belcebu->termino_ronda(this->equipo);
 				} 
-				this->belcebu->m_turno.unlock();
+				m_turno.unlock();
 				break;
 				// hay que tener mucho cuidado con la variable nro_jugador que parece estar rota
 			}
@@ -101,7 +102,7 @@ void Equipo::jugador(int nro_jugador) {
 				// La idea es hacer un Round robin combinado con shortest, cuando el quantum es mayor a la cantidad de jugadores 
 				// movemos primero una vez a cada jugador y con el quantum restante movemos al jugador mas cercano a la bandera
 				//
-				this->belcebu->m_turno.lock();
+				m_turno.lock();
 				int movimientos_destinados_a_shortest = this->quantum - this->cant_jugadores;
 				int jugador_a_mover = this->cant_jugadores_que_ya_jugaron % this->cant_jugadores; //si bien esta es la cuenta que se usa cuando el quantum es menor a la cantidad de jugadores, tambien sirve en el otro caso
 				if (jugador_a_mover == nro_jugador){ //chequeo si soy el jugador que debe hacer el movimiento
@@ -137,7 +138,7 @@ void Equipo::jugador(int nro_jugador) {
 						}
 					}
 				}
-				this->belcebu->m_turno.unlock();
+				m_turno.unlock();
 				break;
 			}
 			default:

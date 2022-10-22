@@ -202,10 +202,10 @@ void gameMaster::termino_ronda(color equipo) {
     assert((this->turno == ROJO && quantum_rojo == 0) || (this->turno == AZUL && quantum_azul == 0));
 	assert(this->turno == ROJO || this->turno == AZUL);
 	
-	if(this->turno == ROJO) {// Hay que meter algun UNLOCK aca del m_turno
+	if(this->turno == ROJO) {
 		this->turno = AZUL;
-		sem_post(&turno_azul); //pongo en verde el semaforo azul 
-		sem_wait(&turno_rojo); //este semaforo no deberia ir aca, estoy pensando en donde deberia ir!!
+		sem_post(&turno_azul); 
+		sem_wait(&turno_rojo); 
 	} else if (this->turno == AZUL) {
 		this->turno = ROJO;
 		sem_post(&turno_rojo);		

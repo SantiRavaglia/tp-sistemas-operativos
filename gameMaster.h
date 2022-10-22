@@ -46,7 +46,7 @@ public:
     //...
     //
 
-    mutex m_turno;
+    
 
     // Métodos públicos
     bool termino_juego();
