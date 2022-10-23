@@ -14,11 +14,11 @@ direccion Equipo::apuntar_a(coordenadas pos1, coordenadas pos2) {
 	if (pos2.second < pos1.second) return ARRIBA;
 	if (pos2.first > pos1.first) return DERECHA;
 	else if (pos2.first < pos1.first) return IZQUIERDA;
-}
+	return ARRIBA;
+	}
 
 
 void Equipo::jugador(int nro_jugador) {
-	cout << "JUGADOR: 0 " << " EQUIPO: " << equipo << endl;
 	while(pos_bandera_contraria == make_pair(-1,-1)){
 		this_thread::sleep_for(5000ms);
 		cout << "JUGADOR: 1" << " EQUIPO: " << equipo << endl;
@@ -36,8 +36,6 @@ void Equipo::jugador(int nro_jugador) {
 		cout << "JUGADOR: 2" << " EQUIPO: " << equipo << endl;
 			cout << "BANDERA CONTRARIA: " << pos_bandera_contraria.first << "," << pos_bandera_contraria.second << endl;
 	}
-	cout << "JUGADOR: 3" << endl;
-	cout << "BANDERA CONTRARIA: " << pos_bandera_contraria.first << "," << pos_bandera_contraria.second << endl;
 	while(!this->belcebu->termino_juego()) { // Chequear que no haya una race condition en gameMaster
 		switch(this->strat) {
 			//SECUENCIAL,RR,SHORTEST,USTEDES
@@ -96,14 +94,15 @@ void Equipo::jugador(int nro_jugador) {
 			// Si es un movimiento random o hacia la bandera 
 			// Si esta es la strat tengo que asegurarme de llamar al de menor dist
 				m_turno.lock();
+				printf("arranca jugador numero %i del equipo %i a moverse\n", nro_jugador, this->equipo);
 				int jugador_cercano = this->jugador_mas_cercano(); 
 				if (nro_jugador == jugador_cercano){ //podriamos llegar a implementar un else que duerma a los jugadores que no son el mas cercano, pero complicaria el codigo, puede causar deadlocks y no es mucho mas optimo
+					printf("entra el jugador mas cercano %i del equipo %i al if\n", nro_jugador, this->equipo);
 					this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
 					this->belcebu->termino_ronda(this->equipo);
 				} 
 				m_turno.unlock();
 				break;
-				// hay que tener mucho cuidado con la variable nro_jugador que parece estar rota
 			}
 
 			case(USTEDES): {
@@ -131,11 +130,13 @@ void Equipo::jugador(int nro_jugador) {
 							this->quantum_restante = this->quantum;
 							this->belcebu->termino_ronda(this->equipo);
 						} else {
-							if (movimientos_destinados_a_shortest >= this->quantum_restante){ //destino quantum - #cantidad_de_jugadores movimientos a shortest y el resto a quantum
+							if (movimientos_destinados_a_shortest >= this->quantum_restante){ //destino #quantum - #cantidad_de_jugadores movimientos a shortest y el resto a quantum
 								int jugador_cercano = this->jugador_mas_cercano(); 
 								if (nro_jugador == jugador_cercano){ //podriamos llegar a implementar un else que duerma a los jugadores que no son el mas cercano, pero complicaria el codigo, puede causar deadlocks y no es mucho mas optimo
-									this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
-									this->quantum_restante--;
+									while(this->quantum_restante > 0) { // lo muevo #quantum - #cantidad_de_jugadores veces
+										this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
+										this->quantum_restante--;
+									}
 								} 
 							} else {
 								this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
@@ -182,11 +183,11 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	//barrier barreraAux(this-> cant_jugadores); 
 	//this->barrera_jugadores = barreraAux;
 
-	/*if (strat == SHORTEST) {
+	if (strat == SHORTEST) {
 		cout << "3" << endl;
 		this->buscar_bandera_contraria_single_thread();
-	}*/
-
+	}
+	printf("bandera contraria: (%i , %i)\n", this->pos_bandera_contraria.first, this->pos_bandera_contraria.second);
 }
 
 void Equipo::comenzar() {
@@ -220,6 +221,7 @@ coordenadas Equipo::buscar_bandera_contraria(int casillaInicio, int cantCasillas
 	int filaFinal = casillaInicio/tamX;
 	int columnaFinal = casillaInicio % tamX;
 	bool primeraIteracion = true;
+	coordenadas coord_bandera;
 	for (int i = filaInicial; i <= filaFinal; i++){
 		// Tengo que llamar en la primera iteracion desde la columna en la que empiece
 		// y en la ultima iteracion de la columna en la que termino
@@ -229,7 +231,8 @@ coordenadas Equipo::buscar_bandera_contraria(int casillaInicio, int cantCasillas
 		if (primeraIteracion) inicio = columnaInicial;
 		for (int j = inicio ; j <= fin; j++){
 			if(this->belcebu->en_posicion(make_pair(i,j)) == bandera_contraria){
-				pos_bandera_contraria = make_pair(i,j);
+				this->pos_bandera_contraria = make_pair(i,j);
+				coord_bandera = make_pair(i,j);
 			};
 		}
 		primeraIteracion = false;
@@ -239,6 +242,7 @@ coordenadas Equipo::buscar_bandera_contraria(int casillaInicio, int cantCasillas
 	- Si puedo asignar la bandera del equipo contraria asi nomas o tengo que devolverla al jugador y eso pasarla al belcebu
 	- Agregar algun flag para cortar la iteracion en todos los demas jugadores?
 	*/
+	return coord_bandera;
 }
 
 int Equipo::jugador_mas_cercano() {
@@ -259,15 +263,18 @@ coordenadas Equipo::buscar_bandera_contraria_single_thread() {
 	int tamX = this->belcebu->getTamx();
 	int tamY = this->belcebu->getTamy();
 	int columnaInicial;
+	coordenadas coord_bandera;
 	cout << "4" << endl;
 	if (this->equipo == ROJO) {
 		cout << "5" << endl;
 		columnaInicial = tamX-1;
 		for (int i = columnaInicial; i >= 0; i--) {
-			for (int j = 0; j < tamY; i++) {
-				cout << "6" << endl;
+			for (int j = 0; j < tamY; j++) {
+				// cout << "6 " << i << j << endl;
+				printf("6, (%i , %i) \n", i, j);
 				if (this->belcebu->en_posicion(make_pair(i, j)) == BANDERA_AZUL) {
 					this->pos_bandera_contraria = make_pair(i, j);
+					coord_bandera = make_pair(i,j);
 					cout << "7" << endl;
 					break;
 				}
@@ -281,9 +288,10 @@ coordenadas Equipo::buscar_bandera_contraria_single_thread() {
 	} else {
 		columnaInicial = 0;
 		for (int i = columnaInicial; i < tamX; i++) {
-			for (int j = 0; j < tamY; i++) {
+			for (int j = 0; j < tamY; j++) {
 				if (this->belcebu->en_posicion(make_pair(i, j)) == BANDERA_ROJA) {
 					this->pos_bandera_contraria = make_pair(i, j);
+					coord_bandera = make_pair(i,j);
 					break;
 				}
 			}
@@ -292,6 +300,7 @@ coordenadas Equipo::buscar_bandera_contraria_single_thread() {
 			}
 		}
 	}
+	return coord_bandera;
 }
 
 

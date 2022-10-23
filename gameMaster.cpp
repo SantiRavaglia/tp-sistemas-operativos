@@ -83,11 +83,13 @@ gameMaster::gameMaster(Config config) {
 
     tablero[config.bandera_roja.first][config.bandera_roja.second] = BANDERA_ROJA;
     tablero[config.bandera_azul.first][config.bandera_azul.second] = BANDERA_AZUL;
-	this->turno = ROJO;
+	color turno_init = ROJO;
+	this->turno = turno_init;
 	sem_init(&turno_rojo,0,1); //inicializo los semaforos, arranca el rojo
 	sem_init(&turno_azul,0,0);
 
     cout << "SE HA INICIALIZADO GAMEMASTER CON EXITO" << endl;
+	printf("turno inicial: %i \n", turno_init);
     // Insertar código que crea necesario de inicialización 
 }
 
@@ -198,16 +200,18 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 
 void gameMaster::termino_ronda(color equipo) {
 	// FIXME: Hacer chequeo de que es el color correcto que está llamando
+	printf("color equipo: %i, color llamador: %i\n", this->turno, equipo);
 	assert(equipo == this->turno);
 	// FIXME: Hacer chequeo que hayan terminado todos los jugadores del equipo o su quantum (via mover_jugador)
-    assert((this->turno == ROJO && quantum_rojo == 0) || (this->turno == AZUL && quantum_azul == 0));
 	assert(this->turno == ROJO || this->turno == AZUL);
 	
 	if(this->turno == ROJO) {
+		printf("jugador del equipo %i cambia de turno y hace wait en el semaforo\n", equipo);
 		this->turno = AZUL;
 		sem_post(&turno_azul); 
 		sem_wait(&turno_rojo); 
 	} else if (this->turno == AZUL) {
+		printf("jugador del equipo %i cambia de turno y hace wait en el semaforo\n", equipo);
 		this->turno = ROJO;
 		sem_post(&turno_rojo);		
 		sem_wait(&turno_azul);

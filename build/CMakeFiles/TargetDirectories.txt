@@ -1,0 +1,3 @@
+/home/ignacio/Desktop/tp-sistemas-operativos2/build/CMakeFiles/rebuild_cache.dir
+/home/ignacio/Desktop/tp-sistemas-operativos2/build/CMakeFiles/edit_cache.dir
+/home/ignacio/Desktop/tp-sistemas-operativos2/build/CMakeFiles/test_tp_sistemas.dir

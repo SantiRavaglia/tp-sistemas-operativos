@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/test_tp_sistemas.dir/main.cpp.o CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o CMakeFiles/test_tp_sistemas.dir/config.cpp.o CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o  -o test_tp_sistemas  -lpthread 

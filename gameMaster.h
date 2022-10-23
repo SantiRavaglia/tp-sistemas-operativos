@@ -37,18 +37,18 @@ private:
 public:
     // Atributos públicos
     gameMaster(Config config);
-    void termino_ronda(color equipo); // Marca que un jugador terminó la ronda
-    int mover_jugador(direccion dir, int nro_jugador);
     color ganador = INDEFINIDO;    
-    sem_t turno_rojo, turno_azul; // FIXME: Al principio necesito entrar como azul, luego puedo hacerlo por el método termino_ronda....
 
     //
     //...
     //
 
+    semt_t semaphore turno_rojo, turno_azul; // FIXME: Al principio necesito entrar como azul, luego puedo hacerlo por el método termino_ronda....
     
 
     // Métodos públicos
+    void termino_ronda(color equipo); // Marca que un jugador terminó la ronda
+    int mover_jugador(direccion dir, int nro_jugador);
     bool termino_juego();
 	int getTamx();
 	int getTamy();
