@@ -1,3 +1,0 @@
-/home/tobi/facultad/tp-sistemas-operativos/CMakeFiles/test_tp_sistemas.dir
-/home/tobi/facultad/tp-sistemas-operativos/CMakeFiles/edit_cache.dir
-/home/tobi/facultad/tp-sistemas-operativos/CMakeFiles/rebuild_cache.dir
