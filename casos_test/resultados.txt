@@ -1,0 +1,5 @@
+shortest_sin _roblema -> Gana Equipo rojo
+shortest_chocan_jugadores -> El rojo va derecho para abajo y el azul derecho para arriba, se encuentran en el medio y quedan trabados. Con nuestra estrategia deberia ganar Rojo.
+secuencial_jugador_trabado -> Depende de que thread llegue primero al principio hay un jugador trabado de cada equipo. Deberia ganar rojo.
+round_robin_vs_shortest_quantum_5 -> Si corremos round robin gana Azul. Si corremos shortest gana rojo.
+estrategia_nuestra -> Con SDF queda trabado en la primera iteracion. Con nuestra estrategia gana ROJO.
