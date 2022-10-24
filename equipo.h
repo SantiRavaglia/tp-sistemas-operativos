@@ -6,7 +6,7 @@
 #include <thread>
 #include "definiciones.h"
 #include "gameMaster.h"
-// #include <barrier>
+#include <barrier>
 
 using namespace std;
 
@@ -25,8 +25,8 @@ class Equipo {
 		//
 		// ...
 		//
-		//barrier barrera_jugadores(1);
-		//barrera *barrera_jugadores = new barrera();
+
+		// barrier barrera_jugadores;
 
 		// Métodos privados 
 		direccion apuntar_a(coordenadas pos2, coordenadas pos1);

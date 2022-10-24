@@ -22,15 +22,13 @@ const int quantum = 10;
 int main(){
     Config config = *(new Config());
 
-	cout << "0" << endl;
+	
     gameMaster belcebu = gameMaster(config);
-    cout << "1" << endl;
 
 	// Creo equipos (lanza procesos)
 	int quantum = 10;
 	
     Equipo rojo(&belcebu, ROJO, strat, config.cantidad_jugadores, quantum, config.pos_rojo);
-	cout << "2" << endl;
     Equipo azul(&belcebu, AZUL, strat, config.cantidad_jugadores, quantum, config.pos_azul);
     
     // while(true) {
@@ -39,9 +37,7 @@ int main(){
     // }
     sleep(1);
     rojo.comenzar();
-    sleep(3);
     azul.comenzar();
-    sleep(1);
 	rojo.terminar();
 	azul.terminar();
     //belcebu.play();

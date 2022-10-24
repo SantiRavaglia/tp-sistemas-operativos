@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <vector>
 #include <mutex>
-#include <semaphore.h>
+#include <semaphore>
 #include "definiciones.h"
 #include "config.h"
 
@@ -43,7 +43,7 @@ public:
     //...
     //
 
-    semt_t semaphore turno_rojo, turno_azul; // FIXME: Al principio necesito entrar como azul, luego puedo hacerlo por el método termino_ronda....
+    binary_semaphore turno_rojo{0}, turno_azul{0}; // FIXME: Al principio necesito entrar como azul, luego puedo hacerlo por el método termino_ronda....
     
 
     // Métodos públicos

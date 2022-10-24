@@ -1,18 +1,17 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "CXX"
   )
-# The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/ignacio/Desktop/tp-sistemas-operativos2/config.cpp" "/home/ignacio/Desktop/tp-sistemas-operativos2/build/CMakeFiles/test_tp_sistemas.dir/config.cpp.o"
-  "/home/ignacio/Desktop/tp-sistemas-operativos2/equipo.cpp" "/home/ignacio/Desktop/tp-sistemas-operativos2/build/CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o"
-  "/home/ignacio/Desktop/tp-sistemas-operativos2/gameMaster.cpp" "/home/ignacio/Desktop/tp-sistemas-operativos2/build/CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o"
-  "/home/ignacio/Desktop/tp-sistemas-operativos2/main.cpp" "/home/ignacio/Desktop/tp-sistemas-operativos2/build/CMakeFiles/test_tp_sistemas.dir/main.cpp.o"
-  )
-set(CMAKE_CXX_COMPILER_ID "GNU")
 
-# The include file search paths:
-set(CMAKE_CXX_TARGET_INCLUDE_PATH
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/ignacio/Desktop/tp/tp-sistemas-operativos/config.cpp" "CMakeFiles/test_tp_sistemas.dir/config.cpp.o" "gcc" "CMakeFiles/test_tp_sistemas.dir/config.cpp.o.d"
+  "/home/ignacio/Desktop/tp/tp-sistemas-operativos/equipo.cpp" "CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o" "gcc" "CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o.d"
+  "/home/ignacio/Desktop/tp/tp-sistemas-operativos/gameMaster.cpp" "CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o" "gcc" "CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o.d"
+  "/home/ignacio/Desktop/tp/tp-sistemas-operativos/main.cpp" "CMakeFiles/test_tp_sistemas.dir/main.cpp.o" "gcc" "CMakeFiles/test_tp_sistemas.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links.

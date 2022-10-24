@@ -21,7 +21,6 @@ direccion Equipo::apuntar_a(coordenadas pos1, coordenadas pos2) {
 void Equipo::jugador(int nro_jugador) {
 	while(pos_bandera_contraria == make_pair(-1,-1)){
 		this_thread::sleep_for(5000ms);
-		cout << "JUGADOR: 1" << " EQUIPO: " << equipo << endl;
 		int tamX = this->belcebu->getTamx();
 		int tamY = this->belcebu->getTamy();
 		//Que hacer si la division del tablero da un numero con coma?
@@ -33,8 +32,6 @@ void Equipo::jugador(int nro_jugador) {
 			cantCasillas = tamX*tamY - casillaInicio - 1;
 		}
 		buscar_bandera_contraria(casillaInicio, cantCasillas);
-		cout << "JUGADOR: 2" << " EQUIPO: " << equipo << endl;
-			cout << "BANDERA CONTRARIA: " << pos_bandera_contraria.first << "," << pos_bandera_contraria.second << endl;
 	}
 	while(!this->belcebu->termino_juego()) { // Chequear que no haya una race condition en gameMaster
 		switch(this->strat) {
@@ -94,11 +91,15 @@ void Equipo::jugador(int nro_jugador) {
 			// Si es un movimiento random o hacia la bandera 
 			// Si esta es la strat tengo que asegurarme de llamar al de menor dist
 				m_turno.lock();
-				printf("arranca jugador numero %i del equipo %i a moverse\n", nro_jugador, this->equipo);
+				printf("arranca jugador numero %i del equipo %i a moverse en la posicion (%i, %i) direccion %i \n", nro_jugador, this->equipo, this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second, apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria));
+				// this_thread::sleep_for(2000ms);
 				int jugador_cercano = this->jugador_mas_cercano(); 
 				if (nro_jugador == jugador_cercano){ //podriamos llegar a implementar un else que duerma a los jugadores que no son el mas cercano, pero complicaria el codigo, puede causar deadlocks y no es mucho mas optimo
 					printf("entra el jugador mas cercano %i del equipo %i al if\n", nro_jugador, this->equipo);
-					this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
+					int movio_jugador = this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
+					if(movio_jugador == 0) {
+						this->posiciones[nro_jugador] = this->belcebu->proxima_posicion(this->posiciones[nro_jugador], apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria)) ;
+					}
 					this->belcebu->termino_ronda(this->equipo);
 				} 
 				m_turno.unlock();
@@ -184,7 +185,6 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	//this->barrera_jugadores = barreraAux;
 
 	if (strat == SHORTEST) {
-		cout << "3" << endl;
 		this->buscar_bandera_contraria_single_thread();
 	}
 	printf("bandera contraria: (%i , %i)\n", this->pos_bandera_contraria.first, this->pos_bandera_contraria.second);
@@ -194,19 +194,17 @@ void Equipo::comenzar() {
 	// Arranco cuando me toque el turno 
 	// TODO: Quien empieza ? No se si lo de abajo esta bien
 	//fsem_wait(&(belcebu->turno_rojo)); // Inicializo el rojo
-	cout << " COMENZAR: 0" << endl;
-	cout << "equipo: " << this->equipo << endl;
-	if (this->equipo == AZUL) sem_wait(&(belcebu->turno_azul)); // Pongo a esperar el azul y cuando termine el rojo va a iniciar este
-	cout << " COMENZAR: 1" << endl;	
+	if (this->equipo == AZUL) (belcebu->turno_azul).acquire(); // Pongo a esperar el azul y cuando termine el rojo va a iniciar este
 	// Creamos los jugadores
 	for(int i=0; i < cant_jugadores; i++) {
-		cout << "COMENZAR: 2" << endl;
 		jugadores.emplace_back(thread(&Equipo::jugador, this, i)); 
 	}
-	if (this->equipo == ROJO) sem_post(&(belcebu->turno_azul));
+	//if (this->equipo == ROJO) (belcebu->turno_azul).release();
 }
 
 void Equipo::terminar() {
+	this->belcebu->turno_rojo.release();
+	this->belcebu->turno_azul.release();
 	for(auto &t:jugadores){
 		t.join();
 	}	
@@ -264,24 +262,18 @@ coordenadas Equipo::buscar_bandera_contraria_single_thread() {
 	int tamY = this->belcebu->getTamy();
 	int columnaInicial;
 	coordenadas coord_bandera;
-	cout << "4" << endl;
 	if (this->equipo == ROJO) {
-		cout << "5" << endl;
 		columnaInicial = tamX-1;
 		for (int i = columnaInicial; i >= 0; i--) {
 			for (int j = 0; j < tamY; j++) {
-				// cout << "6 " << i << j << endl;
 				printf("6, (%i , %i) \n", i, j);
 				if (this->belcebu->en_posicion(make_pair(i, j)) == BANDERA_AZUL) {
 					this->pos_bandera_contraria = make_pair(i, j);
 					coord_bandera = make_pair(i,j);
-					cout << "7" << endl;
 					break;
 				}
 			}
-			cout << "8" << endl;
 			if (this->pos_bandera_contraria != make_pair(-1, -1)) {
-				cout << "9" << endl;
 				break;
 			}
 		}
