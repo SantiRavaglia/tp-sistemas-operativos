@@ -93,16 +93,24 @@ gameMaster::gameMaster(Config config) {
 	this->turno = turno_init;
 	// sem_init(&turno_rojo,0,1); //inicializo los semaforos, arranca el rojo
 
+	this->turno_azul.lock();
+	this->turno_rojo.lock();
+
     cout << "SE HA INICIALIZADO GAMEMASTER CON EXITO" << endl;
 	printf("turno inicial: %i \n", turno_init);
     // Insertar código que crea necesario de inicialización 
 }
 
 // MUEVE JUGADOR 
-void gameMaster::mover_jugador_tablero(coordenadas pos_anterior, coordenadas pos_nueva, color colorEquipo){
+void gameMaster::mover_jugador_tablero(coordenadas pos_anterior, coordenadas pos_nueva, color colorEquipo, int nro_jugador){
     // assert(es_color_libre(tablero[pos_nueva.first][pos_nueva.second]));
     tablero[pos_anterior.first][pos_anterior.second] = VACIO; 
     tablero[pos_nueva.first][pos_nueva.second] = colorEquipo;
+	if (turno == ROJO) {
+		this->pos_jugadores_rojos[nro_jugador] = pos_nueva;
+	} else {
+		this->pos_jugadores_azules[nro_jugador] = pos_nueva;
+	}
 }
 
 
@@ -115,6 +123,8 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 	} else 	{
 		posicion_jugador = this->pos_jugadores_azules[nro_jugador];
 	}
+
+	printf("proxima posicion: jug n° %i equipo %i en pos (%i, %i) , dir %i \n", nro_jugador, this->turno, posicion_jugador.first, posicion_jugador.second, dir);
 	
 	if (this->turno == ROJO && (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_AZUL || es_color_libre(en_posicion(proxima_posicion(posicion_jugador, dir))))) {
 		printf("MUEVO JUGADOR\n");
@@ -123,7 +133,7 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 			ganador = ROJO;
 			printf("GANADOR\n");
 		}
-		mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, dir), ROJO);
+		mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, dir), ROJO, nro_jugador);
 	} else if (this->turno == AZUL && (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_ROJA || es_color_libre(en_posicion(proxima_posicion(posicion_jugador, dir))))) { 
 		// SI ES TURNO DEL AZUL Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA ROJO, ME MUEVO
 		printf("MUEVO JUGADOR\n");
@@ -131,7 +141,7 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 			ganador = AZUL;
 			printf("GANADOR\n");
 		} 
-		mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, dir), AZUL);
+		mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, dir), AZUL, nro_jugador);
 	} else {
 			// NO PUEDO MOVERME
 			movimiento_valido = -1;
@@ -152,17 +162,17 @@ void gameMaster::termino_ronda(color equipo) {
 	assert(this->turno == ROJO || this->turno == AZUL);
 	
 	if(this->turno == ROJO) {
-		printf("jugador del equipo %i cambia de turno y hace wait en el semaforo\n+++++++++++++++++++++++\n", equipo);
+		printf("jugador del equipo %i cambia de turno y hace wait en el semaforo\n+++++++++++++++++ CAMBIO TURNO +++++++++++++++++\n", equipo);
 		this->turno = AZUL;
-		this->turno_azul.release();
-		this->turno_rojo.acquire();
-		printf("Vuelve a jugar el equipo ROJO\n");
+		this->turno_azul.unlock();
+		this->turno_rojo.lock();
+		printf("Vuelve a jugar el equipo %i\n", this->turno);
 	} else if (this->turno == AZUL) {
-		printf("jugador del equipo %i cambia de turno y hace wait en el semaforo\n----------------------\n", equipo);
+		printf("jugador del equipo %i cambia de turno y hace wait en el semaforo\n+++++++++++++++++ CAMBIO TURNO +++++++++++++++++\n", equipo);
 		this->turno = ROJO;
-		this->turno_rojo.release();
-		this->turno_azul.acquire();
-		printf("Vuelve a jugar el equipo AZUL\n");
+		this->turno_rojo.unlock();
+		this->turno_azul.lock();
+		printf("Vuelve a jugar el equipo %i\n", this->turno);
 	}
 }
 
@@ -174,11 +184,11 @@ coordenadas gameMaster::proxima_posicion(coordenadas anterior, direccion movimie
 	// Calcula la proxima posición a moverse (es una copia) 
 	switch(movimiento) {
 		case(ARRIBA):
-			anterior.second--; 
+			anterior.second++; 
 			break;
 
 		case(ABAJO):
-			anterior.second++;
+			anterior.second--;
 			break;
 
 		case(IZQUIERDA):

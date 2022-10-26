@@ -7,6 +7,7 @@
 #include <semaphore>
 #include "definiciones.h"
 #include "config.h"
+#include <thread>
 
 using namespace std;
 
@@ -29,7 +30,7 @@ private:
 
     // Métodos privados
     color obtener_coordenadas(coordenadas coord);
-    void mover_jugador_tablero(coordenadas pos_anterior, coordenadas pos_nueva, color colorEquipo);
+    void mover_jugador_tablero(coordenadas pos_anterior, coordenadas pos_nueva, color colorEquipo, int nro_jugador);
     //
     //...
     //
@@ -43,8 +44,7 @@ public:
     //...
     //
 
-    binary_semaphore turno_rojo{0}, turno_azul{0}; // FIXME: Al principio necesito entrar como azul, luego puedo hacerlo por el método termino_ronda....
-    
+    mutex turno_rojo, turno_azul;
 
     // Métodos públicos
     void termino_ronda(color equipo); // Marca que un jugador terminó la ronda

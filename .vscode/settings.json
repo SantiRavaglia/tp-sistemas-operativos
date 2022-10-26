@@ -3,6 +3,9 @@
         "ostream": "cpp",
         "semaphore": "cpp",
         "stop_token": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "barrier": "cpp",
+        "chrono": "cpp",
+        "mutex": "cpp"
     }
 }

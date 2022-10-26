@@ -10,8 +10,8 @@
 using namespace std;
 
 direccion Equipo::apuntar_a(coordenadas pos1, coordenadas pos2) {
-	if (pos2.second > pos1.second) return ABAJO;
-	if (pos2.second < pos1.second) return ARRIBA;
+	if (pos2.second > pos1.second) return ARRIBA;
+	if (pos2.second < pos1.second) return ABAJO;
 	if (pos2.first > pos1.first) return DERECHA;
 	else if (pos2.first < pos1.first) return IZQUIERDA;
 	return ARRIBA;
@@ -33,21 +33,26 @@ void Equipo::jugador(int nro_jugador) {
 		}
 		buscar_bandera_contraria(casillaInicio, cantCasillas);
 	}
-	while(!this->belcebu->termino_juego()) { // Chequear que no haya una race condition en gameMaster
+	while(true) { // Chequear que no haya una race condition en gameMaster
+
+	
+	m_turno.lock();
+	if(this->belcebu->termino_juego()) {
+		m_turno.unlock();
+		this->equipo == ROJO ? this->belcebu->turno_rojo.unlock() : this->belcebu->turno_azul.unlock();
+		break;
+	}
 		switch(this->strat) {
 			//SECUENCIAL,RR,SHORTEST,USTEDES
 			case(SECUENCIAL): { // AGREGAR BARRERA: DESPUES DE MOVERSE HACE BARRERA.WAIT ASI CADA JUGADOR SE MUEVE SOLO UNA VEZ.
-				m_turno.lock();
 				if (this->cant_jugadores_que_ya_jugaron == this->cant_jugadores) {
 					this->cant_jugadores_que_ya_jugaron = 0; //reinicio los valores
 					this->quantum_restante = this->quantum;
 					this->belcebu->termino_ronda(this->equipo);
-					m_turno.unlock(); 
 					// Hay que refreshear el quantum/jugadores que ya jugaron al principio de la ronda
 				} else {
 					this->belcebu->mover_jugador(apuntar_a(this->posiciones[nro_jugador], this->pos_bandera_contraria),nro_jugador);
 					this->cant_jugadores_que_ya_jugaron++;
-					m_turno.unlock();
 					//(this->barrera_jugadores).arrive_and_wait();
 				}
 				break;
@@ -55,7 +60,6 @@ void Equipo::jugador(int nro_jugador) {
 			
 			case(RR): {
 			// Quizas vaya aca el semaforo y la resta de quantum donde va?
-				m_turno.lock();
 				int jugador_a_mover = this->cant_jugadores_que_ya_jugaron % this->cant_jugadores; //si bien esta es la cuenta que se usa cuando el quantum es menor a la cantidad de jugadores, tambien sirve en el otro caso
 				if (jugador_a_mover == nro_jugador){ //chequeo si soy el jugador que debe hacer el movimiento
 					if (this->quantum <= this->cant_jugadores){ //chequeo en cual de los dos casos estoy
@@ -82,7 +86,6 @@ void Equipo::jugador(int nro_jugador) {
 						}
 					}
 				}
-				m_turno.unlock();
 				break;
 			}
 
@@ -90,8 +93,7 @@ void Equipo::jugador(int nro_jugador) {
 			// 	Tengo que ver de donde saco la dist a la bandera
 			// Si es un movimiento random o hacia la bandera 
 			// Si esta es la strat tengo que asegurarme de llamar al de menor dist
-				m_turno.lock();
-				printf("arranca jugador numero %i del equipo %i a moverse en la posicion (%i, %i) direccion %i \n", nro_jugador, this->equipo, this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second, apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria));
+				printf("------------ JUGADOR NUEVO ------------ arranca jugador numero %i del equipo %i a moverse en la posicion (%i, %i) direccion %i \n", nro_jugador, this->equipo, this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second, apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria));
 				// this_thread::sleep_for(2000ms);
 				int jugador_cercano = this->jugador_mas_cercano(); 
 				if (nro_jugador == jugador_cercano){ //podriamos llegar a implementar un else que duerma a los jugadores que no son el mas cercano, pero complicaria el codigo, puede causar deadlocks y no es mucho mas optimo
@@ -99,10 +101,10 @@ void Equipo::jugador(int nro_jugador) {
 					int movio_jugador = this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
 					if(movio_jugador == 0) {
 						this->posiciones[nro_jugador] = this->belcebu->proxima_posicion(this->posiciones[nro_jugador], apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria)) ;
+						printf("jugador ahora en la posicion (%i, %i)\n", this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second);
 					}
 					this->belcebu->termino_ronda(this->equipo);
 				} 
-				m_turno.unlock();
 				break;
 			}
 
@@ -110,7 +112,6 @@ void Equipo::jugador(int nro_jugador) {
 				// La idea es hacer un Round robin combinado con shortest, cuando el quantum es mayor a la cantidad de jugadores 
 				// movemos primero una vez a cada jugador y con el quantum restante movemos al jugador mas cercano a la bandera
 				//
-				m_turno.lock();
 				int movimientos_destinados_a_shortest = this->quantum - this->cant_jugadores;
 				int jugador_a_mover = this->cant_jugadores_que_ya_jugaron % this->cant_jugadores; //si bien esta es la cuenta que se usa cuando el quantum es menor a la cantidad de jugadores, tambien sirve en el otro caso
 				if (jugador_a_mover == nro_jugador){ //chequeo si soy el jugador que debe hacer el movimiento
@@ -148,14 +149,15 @@ void Equipo::jugador(int nro_jugador) {
 						}
 					}
 				}
-				m_turno.unlock();
 				break;
 			}
 			default:
 				break;
 		}	
-		// Termino ronda ? Recordar llamar a belcebu...
-		// OJO. Esto lo termina un jugador... 
+
+		m_turno.unlock();
+		// Termino ronda ? Recordar llamar a belcebu... 
+		// OJO. Esto lo termina un jugador...
 		//
 		// ...
 		//
@@ -184,9 +186,9 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	//barrier barreraAux(this-> cant_jugadores); 
 	//this->barrera_jugadores = barreraAux;
 
-	if (strat == SHORTEST) {
+	// if (strat == SHORTEST) {
 		this->buscar_bandera_contraria_single_thread();
-	}
+	// }
 	printf("bandera contraria: (%i , %i)\n", this->pos_bandera_contraria.first, this->pos_bandera_contraria.second);
 }
 
@@ -194,17 +196,18 @@ void Equipo::comenzar() {
 	// Arranco cuando me toque el turno 
 	// TODO: Quien empieza ? No se si lo de abajo esta bien
 	//fsem_wait(&(belcebu->turno_rojo)); // Inicializo el rojo
-	if (this->equipo == AZUL) (belcebu->turno_azul).acquire(); // Pongo a esperar el azul y cuando termine el rojo va a iniciar este
+	if(this->equipo == AZUL) (this->belcebu->turno_azul).lock(); // Pongo a esperar el azul y cuando termine el rojo va a iniciar este
 	// Creamos los jugadores
+
+	// barrier barrera_equipo(this->cant_jugadores);
+
 	for(int i=0; i < cant_jugadores; i++) {
 		jugadores.emplace_back(thread(&Equipo::jugador, this, i)); 
 	}
-	//if (this->equipo == ROJO) (belcebu->turno_azul).release();
+
 }
 
 void Equipo::terminar() {
-	this->belcebu->turno_rojo.release();
-	this->belcebu->turno_azul.release();
 	for(auto &t:jugadores){
 		t.join();
 	}	

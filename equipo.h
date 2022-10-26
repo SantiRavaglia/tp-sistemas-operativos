@@ -26,7 +26,7 @@ class Equipo {
 		// ...
 		//
 
-		// barrier barrera_jugadores;
+		// barrier barrera_jugadores(cant_jugadores);
 
 		// Métodos privados 
 		direccion apuntar_a(coordenadas pos2, coordenadas pos1);
@@ -37,6 +37,7 @@ class Equipo {
 		//
 		// ...
 		//
+
 	public:
 		Equipo(gameMaster *belcebu, color equipo, 
 				estrategia strat, int cant_jugadores, int quantum, vector<coordenadas> posiciones);
