@@ -16,7 +16,7 @@
 
 using namespace std;
 
-const estrategia strat = SHORTEST;
+const estrategia strat = USTEDES;
 const int quantum = 10;
 
 int main(){

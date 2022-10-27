@@ -59,7 +59,6 @@ void Equipo::jugador(int nro_jugador) {
 			}
 			
 			case(RR): {
-			// Quizas vaya aca el semaforo y la resta de quantum donde va?
 				int jugador_a_mover = this->cant_jugadores_que_ya_jugaron % this->cant_jugadores; //si bien esta es la cuenta que se usa cuando el quantum es menor a la cantidad de jugadores, tambien sirve en el otro caso
 				if (jugador_a_mover == nro_jugador){ //chequeo si soy el jugador que debe hacer el movimiento
 					if (this->quantum <= this->cant_jugadores){ //chequeo en cual de los dos casos estoy
@@ -71,6 +70,9 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
+							if (this->belcebu->ganador != INDEFINIDO){ //si llegué a la bandera termino la ronda porque gané 
+								this->belcebu->termino_ronda(this->equipo);
+							}
 							//(this->barrera_jugadores).arrive_and_wait();
 						}
 					} else {
@@ -82,6 +84,9 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
+							if (this->belcebu->ganador != INDEFINIDO){ //si llegué a la bandera termino la ronda porque gané 
+								this->belcebu->termino_ronda(this->equipo);
+							}
 							//(this->barrera_jugadores).arrive_and_wait();
 						}
 					}
@@ -91,12 +96,10 @@ void Equipo::jugador(int nro_jugador) {
 
 			case(SHORTEST): {
 			// 	Tengo que ver de donde saco la dist a la bandera
-			// Si es un movimiento random o hacia la bandera 
 			// Si esta es la strat tengo que asegurarme de llamar al de menor dist
 				printf("------------ JUGADOR NUEVO ------------ arranca jugador numero %i del equipo %i a moverse en la posicion (%i, %i) direccion %i \n", nro_jugador, this->equipo, this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second, apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria));
-				// this_thread::sleep_for(2000ms);
 				int jugador_cercano = this->jugador_mas_cercano(); 
-				if (nro_jugador == jugador_cercano){ //podriamos llegar a implementar un else que duerma a los jugadores que no son el mas cercano, pero complicaria el codigo, puede causar deadlocks y no es mucho mas optimo
+				if (nro_jugador == jugador_cercano){ 
 					printf("entra el jugador mas cercano %i del equipo %i al if\n", nro_jugador, this->equipo);
 					int movio_jugador = this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
 					if(movio_jugador == 0) {
@@ -124,6 +127,9 @@ void Equipo::jugador(int nro_jugador) {
 							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
+							if (this->belcebu->ganador != INDEFINIDO){ //si llegué a la bandera termino la ronda porque gané 
+								this->belcebu->termino_ronda(this->equipo);
+							}
 							//(this->barrera_jugadores).arrive_and_wait();
 						}
 					} else {
@@ -138,12 +144,18 @@ void Equipo::jugador(int nro_jugador) {
 									while(this->quantum_restante > 0) { // lo muevo #quantum - #cantidad_de_jugadores veces
 										this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
 										this->quantum_restante--;
+										if (this->belcebu->ganador != INDEFINIDO){ //si llegué a la bandera termino la ronda porque gané 
+											this->belcebu->termino_ronda(this->equipo);
+										}
 									}
 								} 
 							} else {
 								this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
 								this->cant_jugadores_que_ya_jugaron++;
 								this->quantum_restante--;
+								if (this->belcebu->ganador != INDEFINIDO){ //si llegué a la bandera termino la ronda porque gané 
+									this->belcebu->termino_ronda(this->equipo);
+								}
 								//(this->barrera_jugadores).arrive_and_wait();
 							}
 						}

@@ -91,7 +91,6 @@ gameMaster::gameMaster(Config config) {
     tablero[config.bandera_azul.first][config.bandera_azul.second] = BANDERA_AZUL;
 	color turno_init = ROJO;
 	this->turno = turno_init;
-	// sem_init(&turno_rojo,0,1); //inicializo los semaforos, arranca el rojo
 
 	this->turno_azul.lock();
 	this->turno_rojo.lock();
@@ -165,13 +164,19 @@ void gameMaster::termino_ronda(color equipo) {
 		printf("jugador del equipo %i cambia de turno y hace wait en el semaforo\n+++++++++++++++++ CAMBIO TURNO +++++++++++++++++\n", equipo);
 		this->turno = AZUL;
 		this->turno_azul.unlock();
-		this->turno_rojo.lock();
+		
+		if (ganador == INDEFINIDO){
+			this->turno_rojo.lock();
+		}
 		printf("Vuelve a jugar el equipo %i\n", this->turno);
 	} else if (this->turno == AZUL) {
 		printf("jugador del equipo %i cambia de turno y hace wait en el semaforo\n+++++++++++++++++ CAMBIO TURNO +++++++++++++++++\n", equipo);
 		this->turno = ROJO;
 		this->turno_rojo.unlock();
-		this->turno_azul.lock();
+		
+		if (ganador == INDEFINIDO){
+			this->turno_azul.lock();
+		}
 		printf("Vuelve a jugar el equipo %i\n", this->turno);
 	}
 }
