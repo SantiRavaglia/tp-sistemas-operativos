@@ -21,7 +21,6 @@ const estrategia strat = USTEDES;
 int main(){
     Config config = *(new Config());
 
-	
     gameMaster belcebu = gameMaster(config);
 
 	// Creo equipos (lanza procesos)

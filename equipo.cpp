@@ -37,6 +37,7 @@ void Equipo::jugador(int nro_jugador) {
 	m_turno.lock();
 
 	if(this->belcebu->termino_juego()) {
+		printf("Termino el juego\n");
 		m_turno.unlock();
 		this->equipo == ROJO ? this->belcebu->turno_rojo.unlock() : this->belcebu->turno_azul.unlock();
 		break;
@@ -165,10 +166,11 @@ void Equipo::jugador(int nro_jugador) {
 				break;
 		}	
 		
-		if (this->belcebu->termino_juego()){ //si llegué a la bandera termino la ronda porque gané 
+		if (this->strat != SHORTEST && this->belcebu->termino_juego()){ //si llegué a la bandera termino la ronda porque gané 
 			this->belcebu->termino_ronda(this->equipo);
 		}
 
+		
 		//this_thread::sleep_for(1000ms);
 		m_turno.unlock();
 		//this_thread::sleep_for(500ms);
@@ -200,9 +202,9 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	// ...
 	//
 
-	// if (strat == SHORTEST) {
+	if (strat == SHORTEST) {
 		this->buscar_bandera_contraria_single_thread();
-	// }
+	}
 	printf("bandera contraria: (%i , %i)\n", this->pos_bandera_contraria.first, this->pos_bandera_contraria.second);
 }
 
@@ -233,15 +235,15 @@ coordenadas Equipo::buscar_bandera_contraria(int casillaInicio, int cantCasillas
 	int filaInicial = casillaInicio/tamX;
 	int columnaInicial = casillaInicio % tamX;
 	int casillaFinal = casillaInicio + cantCasillas;
-	int filaFinal = casillaInicio/tamX;
-	int columnaFinal = casillaInicio % tamX;
+	int filaFinal = casillaFinal/tamX;
+	int columnaFinal = casillaFinal % tamX;
 	bool primeraIteracion = true;
 	coordenadas coord_bandera;
 	for (int i = filaInicial; i <= filaFinal; i++){
 		// Tengo que llamar en la primera iteracion desde la columna en la que empiece
 		// y en la ultima iteracion de la columna en la que termino
 		int inicio = 0;
-		int fin = tamX - 1;
+		int fin = tamY - 1;
 		if (i == filaFinal) fin = columnaFinal; // Ultima fila solo iteramos hasta la columnaFinal del jugador
 		if (primeraIteracion) inicio = columnaInicial;
 		for (int j = inicio ; j <= fin; j++){

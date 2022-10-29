@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ignacio/Desktop/tp/tp-sistemas-operativos
+CMAKE_SOURCE_DIR = /home/tobi/facultad/tp-sistemas-operativos
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ignacio/Desktop/tp/tp-sistemas-operativos/build
+CMAKE_BINARY_DIR = /home/tobi/facultad/tp-sistemas-operativos/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/test_tp_sistemas.dir/depend.make
@@ -72,58 +72,58 @@ include CMakeFiles/test_tp_sistemas.dir/flags.make
 CMakeFiles/test_tp_sistemas.dir/main.cpp.o: CMakeFiles/test_tp_sistemas.dir/flags.make
 CMakeFiles/test_tp_sistemas.dir/main.cpp.o: ../main.cpp
 CMakeFiles/test_tp_sistemas.dir/main.cpp.o: CMakeFiles/test_tp_sistemas.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ignacio/Desktop/tp/tp-sistemas-operativos/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test_tp_sistemas.dir/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_tp_sistemas.dir/main.cpp.o -MF CMakeFiles/test_tp_sistemas.dir/main.cpp.o.d -o CMakeFiles/test_tp_sistemas.dir/main.cpp.o -c /home/ignacio/Desktop/tp/tp-sistemas-operativos/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tobi/facultad/tp-sistemas-operativos/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test_tp_sistemas.dir/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_tp_sistemas.dir/main.cpp.o -MF CMakeFiles/test_tp_sistemas.dir/main.cpp.o.d -o CMakeFiles/test_tp_sistemas.dir/main.cpp.o -c /home/tobi/facultad/tp-sistemas-operativos/main.cpp
 
 CMakeFiles/test_tp_sistemas.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test_tp_sistemas.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ignacio/Desktop/tp/tp-sistemas-operativos/main.cpp > CMakeFiles/test_tp_sistemas.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tobi/facultad/tp-sistemas-operativos/main.cpp > CMakeFiles/test_tp_sistemas.dir/main.cpp.i
 
 CMakeFiles/test_tp_sistemas.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test_tp_sistemas.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ignacio/Desktop/tp/tp-sistemas-operativos/main.cpp -o CMakeFiles/test_tp_sistemas.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tobi/facultad/tp-sistemas-operativos/main.cpp -o CMakeFiles/test_tp_sistemas.dir/main.cpp.s
 
 CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o: CMakeFiles/test_tp_sistemas.dir/flags.make
 CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o: ../gameMaster.cpp
 CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o: CMakeFiles/test_tp_sistemas.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ignacio/Desktop/tp/tp-sistemas-operativos/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o -MF CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o.d -o CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o -c /home/ignacio/Desktop/tp/tp-sistemas-operativos/gameMaster.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tobi/facultad/tp-sistemas-operativos/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o -MF CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o.d -o CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o -c /home/tobi/facultad/tp-sistemas-operativos/gameMaster.cpp
 
 CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ignacio/Desktop/tp/tp-sistemas-operativos/gameMaster.cpp > CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tobi/facultad/tp-sistemas-operativos/gameMaster.cpp > CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.i
 
 CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ignacio/Desktop/tp/tp-sistemas-operativos/gameMaster.cpp -o CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tobi/facultad/tp-sistemas-operativos/gameMaster.cpp -o CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.s
 
 CMakeFiles/test_tp_sistemas.dir/config.cpp.o: CMakeFiles/test_tp_sistemas.dir/flags.make
 CMakeFiles/test_tp_sistemas.dir/config.cpp.o: ../config.cpp
 CMakeFiles/test_tp_sistemas.dir/config.cpp.o: CMakeFiles/test_tp_sistemas.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ignacio/Desktop/tp/tp-sistemas-operativos/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/test_tp_sistemas.dir/config.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_tp_sistemas.dir/config.cpp.o -MF CMakeFiles/test_tp_sistemas.dir/config.cpp.o.d -o CMakeFiles/test_tp_sistemas.dir/config.cpp.o -c /home/ignacio/Desktop/tp/tp-sistemas-operativos/config.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tobi/facultad/tp-sistemas-operativos/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/test_tp_sistemas.dir/config.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_tp_sistemas.dir/config.cpp.o -MF CMakeFiles/test_tp_sistemas.dir/config.cpp.o.d -o CMakeFiles/test_tp_sistemas.dir/config.cpp.o -c /home/tobi/facultad/tp-sistemas-operativos/config.cpp
 
 CMakeFiles/test_tp_sistemas.dir/config.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test_tp_sistemas.dir/config.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ignacio/Desktop/tp/tp-sistemas-operativos/config.cpp > CMakeFiles/test_tp_sistemas.dir/config.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tobi/facultad/tp-sistemas-operativos/config.cpp > CMakeFiles/test_tp_sistemas.dir/config.cpp.i
 
 CMakeFiles/test_tp_sistemas.dir/config.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test_tp_sistemas.dir/config.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ignacio/Desktop/tp/tp-sistemas-operativos/config.cpp -o CMakeFiles/test_tp_sistemas.dir/config.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tobi/facultad/tp-sistemas-operativos/config.cpp -o CMakeFiles/test_tp_sistemas.dir/config.cpp.s
 
 CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o: CMakeFiles/test_tp_sistemas.dir/flags.make
 CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o: ../equipo.cpp
 CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o: CMakeFiles/test_tp_sistemas.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ignacio/Desktop/tp/tp-sistemas-operativos/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o -MF CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o.d -o CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o -c /home/ignacio/Desktop/tp/tp-sistemas-operativos/equipo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tobi/facultad/tp-sistemas-operativos/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o -MF CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o.d -o CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o -c /home/tobi/facultad/tp-sistemas-operativos/equipo.cpp
 
 CMakeFiles/test_tp_sistemas.dir/equipo.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test_tp_sistemas.dir/equipo.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ignacio/Desktop/tp/tp-sistemas-operativos/equipo.cpp > CMakeFiles/test_tp_sistemas.dir/equipo.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tobi/facultad/tp-sistemas-operativos/equipo.cpp > CMakeFiles/test_tp_sistemas.dir/equipo.cpp.i
 
 CMakeFiles/test_tp_sistemas.dir/equipo.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test_tp_sistemas.dir/equipo.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ignacio/Desktop/tp/tp-sistemas-operativos/equipo.cpp -o CMakeFiles/test_tp_sistemas.dir/equipo.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tobi/facultad/tp-sistemas-operativos/equipo.cpp -o CMakeFiles/test_tp_sistemas.dir/equipo.cpp.s
 
 # Object files for target test_tp_sistemas
 test_tp_sistemas_OBJECTS = \
@@ -141,7 +141,7 @@ test_tp_sistemas: CMakeFiles/test_tp_sistemas.dir/config.cpp.o
 test_tp_sistemas: CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o
 test_tp_sistemas: CMakeFiles/test_tp_sistemas.dir/build.make
 test_tp_sistemas: CMakeFiles/test_tp_sistemas.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ignacio/Desktop/tp/tp-sistemas-operativos/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable test_tp_sistemas"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/tobi/facultad/tp-sistemas-operativos/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable test_tp_sistemas"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_tp_sistemas.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -153,6 +153,6 @@ CMakeFiles/test_tp_sistemas.dir/clean:
 .PHONY : CMakeFiles/test_tp_sistemas.dir/clean
 
 CMakeFiles/test_tp_sistemas.dir/depend:
-	cd /home/ignacio/Desktop/tp/tp-sistemas-operativos/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ignacio/Desktop/tp/tp-sistemas-operativos /home/ignacio/Desktop/tp/tp-sistemas-operativos /home/ignacio/Desktop/tp/tp-sistemas-operativos/build /home/ignacio/Desktop/tp/tp-sistemas-operativos/build /home/ignacio/Desktop/tp/tp-sistemas-operativos/build/CMakeFiles/test_tp_sistemas.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/tobi/facultad/tp-sistemas-operativos/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tobi/facultad/tp-sistemas-operativos /home/tobi/facultad/tp-sistemas-operativos /home/tobi/facultad/tp-sistemas-operativos/build /home/tobi/facultad/tp-sistemas-operativos/build /home/tobi/facultad/tp-sistemas-operativos/build/CMakeFiles/test_tp_sistemas.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/test_tp_sistemas.dir/depend
 

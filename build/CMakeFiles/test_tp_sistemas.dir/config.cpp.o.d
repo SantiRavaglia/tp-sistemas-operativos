@@ -1,7 +1,7 @@
 CMakeFiles/test_tp_sistemas.dir/config.cpp.o: \
- /home/ignacio/Desktop/tp/tp-sistemas-operativos/config.cpp \
+ /home/tobi/facultad/tp-sistemas-operativos/config.cpp \
  /usr/include/stdc-predef.h \
- /home/ignacio/Desktop/tp/tp-sistemas-operativos/config.h \
+ /home/tobi/facultad/tp-sistemas-operativos/config.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -36,8 +36,9 @@ CMakeFiles/test_tp_sistemas.dir/config.cpp.o: \
  /usr/include/c++/11/bits/exception_defines.h \
  /usr/include/c++/11/bits/cxxabi_init_exception.h \
  /usr/include/c++/11/typeinfo /usr/include/c++/11/bits/hash_bytes.h \
- /usr/include/c++/11/new /usr/include/c++/11/bits/nested_exception.h \
- /usr/include/c++/11/bits/move.h /usr/include/c++/11/type_traits \
+ /usr/include/c++/11/new /usr/include/c++/11/bits/move.h \
+ /usr/include/c++/11/type_traits \
+ /usr/include/c++/11/bits/nested_exception.h \
  /usr/include/c++/11/bits/char_traits.h \
  /usr/include/c++/11/bits/stl_algobase.h \
  /usr/include/c++/11/bits/functexcept.h \
@@ -165,4 +166,4 @@ CMakeFiles/test_tp_sistemas.dir/config.cpp.o: \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc \
- /home/ignacio/Desktop/tp/tp-sistemas-operativos/definiciones.h
+ /home/tobi/facultad/tp-sistemas-operativos/definiciones.h

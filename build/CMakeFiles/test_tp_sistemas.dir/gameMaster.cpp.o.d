@@ -1,5 +1,5 @@
 CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o: \
- /home/ignacio/Desktop/tp/tp-sistemas-operativos/gameMaster.cpp \
+ /home/tobi/facultad/tp-sistemas-operativos/gameMaster.cpp \
  /usr/include/stdc-predef.h /usr/include/x86_64-linux-gnu/sys/unistd.h \
  /usr/include/unistd.h /usr/include/features.h \
  /usr/include/features-time64.h \
@@ -20,7 +20,7 @@ CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
  /usr/include/linux/close_range.h /usr/include/assert.h \
- /home/ignacio/Desktop/tp/tp-sistemas-operativos/gameMaster.h \
+ /home/tobi/facultad/tp-sistemas-operativos/gameMaster.h \
  /usr/include/c++/11/tuple /usr/include/c++/11/utility \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -185,8 +185,8 @@ CMakeFiles/test_tp_sistemas.dir/gameMaster.cpp.o: \
  /usr/include/c++/11/bits/this_thread_sleep.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/semaphore.h \
  /usr/include/x86_64-linux-gnu/bits/semaphore.h \
- /home/ignacio/Desktop/tp/tp-sistemas-operativos/definiciones.h \
- /home/ignacio/Desktop/tp/tp-sistemas-operativos/config.h \
+ /home/tobi/facultad/tp-sistemas-operativos/definiciones.h \
+ /home/tobi/facultad/tp-sistemas-operativos/config.h \
  /usr/include/c++/11/iostream /usr/include/c++/11/ostream \
  /usr/include/c++/11/ios /usr/include/c++/11/bits/ios_base.h \
  /usr/include/c++/11/bits/locale_classes.h \

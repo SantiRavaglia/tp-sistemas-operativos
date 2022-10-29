@@ -1,4 +1,4 @@
-# Install script for directory: /home/ignacio/Desktop/tp/tp-sistemas-operativos
+# Install script for directory: /home/tobi/facultad/tp-sistemas-operativos
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/ignacio/Desktop/tp/tp-sistemas-operativos/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/tobi/facultad/tp-sistemas-operativos/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
