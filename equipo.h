@@ -39,6 +39,9 @@ class Equipo {
 		//
 
 	public:
+
+		vector<bool> ya_jugo;
+
 		Equipo(gameMaster *belcebu, color equipo, 
 				estrategia strat, int cant_jugadores, int quantum, vector<coordenadas> posiciones);
 		void comenzar();

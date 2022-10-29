@@ -17,7 +17,6 @@
 using namespace std;
 
 const estrategia strat = USTEDES;
-const int quantum = 10;
 
 int main(){
     Config config = *(new Config());
@@ -26,7 +25,7 @@ int main(){
     gameMaster belcebu = gameMaster(config);
 
 	// Creo equipos (lanza procesos)
-	int quantum = 10;
+	int quantum = 5;
 	
     Equipo rojo(&belcebu, ROJO, strat, config.cantidad_jugadores, quantum, config.pos_rojo);
     Equipo azul(&belcebu, AZUL, strat, config.cantidad_jugadores, quantum, config.pos_azul);
@@ -41,7 +40,7 @@ int main(){
 	rojo.terminar();
 	azul.terminar();
     // belcebu.play();
-    cout << "Bandera capturada por el equipo "<< belcebu.ganador << ". Felicidades!" << endl;
+    cout << "Bandera capturada por el equipo "<< (belcebu.ganador == 0 ? "Azul" : "Rojo") << ". Felicidades!" << endl;
 
 }
 
