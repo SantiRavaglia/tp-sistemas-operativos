@@ -29,16 +29,12 @@ int main(){
     Equipo rojo(&belcebu, ROJO, strat, config.cantidad_jugadores, quantum, config.pos_rojo);
     Equipo azul(&belcebu, AZUL, strat, config.cantidad_jugadores, quantum, config.pos_azul);
     
-    // while(true) {
-    //     sleep(10);
-    //     cout << "sleep +++++++++++++++++++++++++++++++++++" << endl;
-    // }
+
     sleep(1);
     rojo.comenzar();
     azul.comenzar();
 	rojo.terminar();
 	azul.terminar();
-    // belcebu.play();
     cout << "Bandera capturada por el equipo "<< (belcebu.ganador == 0 ? "Azul" : "Rojo") << ". Felicidades!" << endl;
 
 }

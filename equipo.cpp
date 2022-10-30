@@ -32,16 +32,16 @@ void Equipo::jugador(int nro_jugador) {
 		}
 		buscar_bandera_contraria(casillaInicio, cantCasillas);
 	}
-	while(true) { // Chequear que no haya una race condition en gameMaster
+	while(true) { 
 
-	m_turno.lock();
+		m_turno.lock();
 
-	if(this->belcebu->termino_juego()) {
-		printf("Termino el juego\n");
-		m_turno.unlock();
-		this->equipo == ROJO ? this->belcebu->turno_rojo.unlock() : this->belcebu->turno_azul.unlock();
-		break;
-	}
+		if(this->belcebu->termino_juego()) {
+			printf("Termino el juego\n");
+			m_turno.unlock();
+			this->equipo == ROJO ? this->belcebu->turno_rojo.unlock() : this->belcebu->turno_azul.unlock();
+			break;
+		}
 		switch(this->strat) {
 			//SECUENCIAL,RR,SHORTEST,USTEDES
 			case(SECUENCIAL): { // AGREGAR BARRERA: DESPUES DE MOVERSE HACE BARRERA.WAIT ASI CADA JUGADOR SE MUEVE SOLO UNA VEZ.
@@ -116,9 +116,7 @@ void Equipo::jugador(int nro_jugador) {
 				//
 				int movimientos_destinados_a_shortest = this->quantum - this->cant_jugadores;
 				int jugador_a_mover = this->cant_jugadores_que_ya_jugaron % this->cant_jugadores; //si bien esta es la cuenta que se usa cuando el quantum es menor a la cantidad de jugadores, tambien sirve en el otro caso
-				//printf("\n nro jugador %i, jugador a mover %i - ", nro_jugador, jugador_a_mover);
 				if (jugador_a_mover == nro_jugador){ //chequeo si soy el jugador que debe hacer el movimiento
-					//printf("quantum = %i, ya jugaron %i jugadores, movimientos para shortest: %i", this->quantum_restante, this->cant_jugadores_que_ya_jugaron, movimientos_destinados_a_shortest);
 					if (this->quantum <= this->cant_jugadores){ //chequeo en cual de los dos casos estoy
 						if(this->cant_jugadores == this->cant_jugadores_que_ya_jugaron){
 							this->cant_jugadores_que_ya_jugaron = 0; //reinicio los valores
@@ -145,10 +143,6 @@ void Equipo::jugador(int nro_jugador) {
 										this->quantum_restante--;
 										
 									}
-
-									/*this->cant_jugadores_que_ya_jugaron = 0; //reinicio los valores
-									this->quantum_restante = this->quantum;
-									this->belcebu->termino_ronda(this->equipo);*/
 								} 
 							} else {
 								//printf(" - muevo de forma secuencial\n");
@@ -174,11 +168,6 @@ void Equipo::jugador(int nro_jugador) {
 		//this_thread::sleep_for(1000ms);
 		m_turno.unlock();
 		//this_thread::sleep_for(500ms);
-		// Termino ronda ? Recordar llamar a belcebu... 
-		// OJO. Esto lo termina un jugador...
-		//
-		// ...
-		//
 	}
 	
 }
@@ -198,24 +187,17 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	vector<bool> vecAux (cant_jugadores,false);
 	this->ya_jugo = vecAux;
 
-	//
-	// ...
-	//
 
 	if (strat == SHORTEST) {
 		this->buscar_bandera_contraria_single_thread();
 	}
-	printf("bandera contraria: (%i , %i)\n", this->pos_bandera_contraria.first, this->pos_bandera_contraria.second);
 }
 
 void Equipo::comenzar() {
 	// Arranco cuando me toque el turno 
-	// TODO: Quien empieza ? No se si lo de abajo esta bien
-	//fsem_wait(&(belcebu->turno_rojo)); // Inicializo el rojo
 	if(this->equipo == AZUL) (this->belcebu->turno_azul).lock(); // Pongo a esperar el azul y cuando termine el rojo va a iniciar este
 	// Creamos los jugadores
 
-	// barrier barrera_equipo(this->cant_jugadores);
 
 	for(int i=0; i < cant_jugadores; i++) {
 		jugadores.emplace_back(thread(&Equipo::jugador, this, i)); 
@@ -317,46 +299,3 @@ coordenadas Equipo::buscar_bandera_contraria_single_thread() {
 
 
 
-
-// coordenadas Equipo::buscar_bandera_contraria(int numJugador) { FALTA DESARROLLAR
-// 	//
-// 	// ...
-// 	//
-
-// 	assert(this->equipo == ROJO && this->equipo == AZUL);
-
-// 	int tamanoX = this->belcebu->getTamy();
-// 	coordenadas seek;
-
-// 	int cantColumnas = ceil(tamanoX / this->cant_jugadores);
-// 	pair<int,int> rangoBusqueda = make_pair(cantColumnas*numJugador, cantColumnas*(numJugador+1)-1);
-
-// 	if (this->equipo = ROJO) {
-// 		seek = make_pair(tamanoX-1, 0);
-// 	} else {
-// 		seek = make_pair(1, 0);
-// 	} 
-	
-// 	for (int i = 0; i < tamanoX; i++) {
-		
-// 		this->belcebu->en_posicion(seek);
-// 	}
-
-// }
-
-
-/*
-4. Defina el metodo coordenadas Equipo::buscar bandera contraria() de la clase equipo donde los jugadores se
-repartan el tablero y puedan buscar, de manera paralela/simuiltanea, la bandera contraria. En particular, sera de
-interes medir los tiempos de busqueda de la bandera contraria utilizando o no el paralelismo mencionado anteriormente.
-Para hacerlo pueden utilizar la funcion clock gettime (con la opcion CLOCK REALTIME) de la biblioteca time.h, que
-se puede linkear utilizando -lrt.
-*/
-
-
-
-
-/*
-1) Antes de empezar a mover, esperamos a encontrar la bandera antes de mvoernos o nos movemos de forma aleatoria hasta saber donde esta? los jugadores usan su turno para buscar la bandera?
-2) Posicion bandera roja es segunda columna, posicion bandera azul es ultima, deberia ser anteultima?
-*/

@@ -22,11 +22,7 @@ class Equipo {
 		int cant_jugadores_que_ya_jugaron = 0;
 		vector<coordenadas> posiciones;
 		coordenadas pos_bandera_contraria;
-		//
-		// ...
-		//
 
-		// barrier barrera_jugadores(cant_jugadores);
 
 		// Métodos privados 
 		direccion apuntar_a(coordenadas pos2, coordenadas pos1);

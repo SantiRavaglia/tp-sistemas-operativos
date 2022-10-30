@@ -1,5 +1,5 @@
 CMakeFiles/test_tp_sistemas.dir/main.cpp.o: \
- /home/tobi/facultad/tp-sistemas-operativos/main.cpp \
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/main.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -198,12 +198,12 @@ CMakeFiles/test_tp_sistemas.dir/main.cpp.o: \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc /usr/include/c++/11/mutex \
  /usr/include/c++/11/bits/unique_lock.h \
- /home/tobi/facultad/tp-sistemas-operativos/gameMaster.h \
- /home/tobi/facultad/tp-sistemas-operativos/definiciones.h \
- /home/tobi/facultad/tp-sistemas-operativos/config.h \
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/gameMaster.h \
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/definiciones.h \
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/config.h \
  /usr/include/c++/11/fstream /usr/include/c++/11/bits/codecvt.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc \
- /home/tobi/facultad/tp-sistemas-operativos/equipo.h \
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/equipo.h \
  /usr/include/c++/11/barrier

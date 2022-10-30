@@ -1,7 +1,7 @@
 CMakeFiles/test_tp_sistemas.dir/config.cpp.o: \
- /home/tobi/facultad/tp-sistemas-operativos/config.cpp \
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/config.cpp \
  /usr/include/stdc-predef.h \
- /home/tobi/facultad/tp-sistemas-operativos/config.h \
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/config.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -166,4 +166,4 @@ CMakeFiles/test_tp_sistemas.dir/config.cpp.o: \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc \
- /home/tobi/facultad/tp-sistemas-operativos/definiciones.h
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/definiciones.h

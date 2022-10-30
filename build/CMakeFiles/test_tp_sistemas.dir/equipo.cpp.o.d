@@ -1,7 +1,7 @@
 CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o: \
- /home/tobi/facultad/tp-sistemas-operativos/equipo.cpp \
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/equipo.cpp \
  /usr/include/stdc-predef.h \
- /home/tobi/facultad/tp-sistemas-operativos/equipo.h \
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/equipo.h \
  /usr/include/semaphore.h /usr/include/features.h \
  /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -196,10 +196,10 @@ CMakeFiles/test_tp_sistemas.dir/equipo.cpp.o: \
  /usr/include/c++/11/ratio /usr/include/c++/11/limits \
  /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
  /usr/include/x86_64-linux-gnu/sys/time.h \
- /home/tobi/facultad/tp-sistemas-operativos/definiciones.h \
- /home/tobi/facultad/tp-sistemas-operativos/gameMaster.h \
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/definiciones.h \
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/gameMaster.h \
  /usr/include/c++/11/mutex /usr/include/c++/11/bits/unique_lock.h \
- /home/tobi/facultad/tp-sistemas-operativos/config.h \
+ /home/ignacio/Desktop/tp/tp-sistemas-operativos/config.h \
  /usr/include/c++/11/iostream /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc /usr/include/c++/11/fstream \
  /usr/include/c++/11/bits/codecvt.h \
