@@ -16,6 +16,7 @@
 
 using namespace std;
 
+
 const estrategia strat = USTEDES;
 
 int main(){
@@ -24,7 +25,7 @@ int main(){
     gameMaster belcebu = gameMaster(config);
 
 	// Creo equipos (lanza procesos)
-	int quantum = 5;
+	int quantum = 10;
 	
     Equipo rojo(&belcebu, ROJO, strat, config.cantidad_jugadores, quantum, config.pos_rojo);
     Equipo azul(&belcebu, AZUL, strat, config.cantidad_jugadores, quantum, config.pos_azul);

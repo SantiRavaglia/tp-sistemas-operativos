@@ -7,6 +7,7 @@
 #include "definiciones.h"
 #include "gameMaster.h"
 #include <barrier>
+#include <time.h>
 
 using namespace std;
 
@@ -22,6 +23,10 @@ class Equipo {
 		int cant_jugadores_que_ya_jugaron = 0;
 		vector<coordenadas> posiciones;
 		coordenadas pos_bandera_contraria;
+
+		pair<int, int> tiempo_busqueda;
+		struct timespec busqueda_inicio;
+		struct timespec busqueda_fin;
 
 
 		// Métodos privados 
