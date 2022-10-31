@@ -27,12 +27,15 @@ class Equipo {
 		pair<int, int> tiempo_busqueda;
 		struct timespec busqueda_inicio;
 		struct timespec busqueda_fin;
+		struct timespec strat_inicio;
+		struct timespec strat_fin;
+		pair<int, int> tiempo_strat;
 
 
 		// Métodos privados 
 		direccion apuntar_a(coordenadas pos2, coordenadas pos1);
 		void jugador(int nro_jugador);
-		coordenadas buscar_bandera_contraria(int casillaInicio, int cantCasillas);
+		coordenadas buscar_bandera_contraria(int casillaInicio);
 		coordenadas buscar_bandera_contraria_single_thread();
 		int jugador_mas_cercano();
 		//

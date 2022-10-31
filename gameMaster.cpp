@@ -126,7 +126,7 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 	// printf("proxima posicion: jug n° %i equipo %i en pos (%i, %i) , dir %i \n", nro_jugador, this->turno, posicion_jugador.first, posicion_jugador.second, dir);
 	
 	if (this->turno == ROJO && (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_AZUL || es_color_libre(en_posicion(proxima_posicion(posicion_jugador, dir))))) {
-		printf("MUEVO JUGADOR - ");
+		printf("MUEVO JUGADOR EQUIPO ROJO - ");
 		// SI ES TURNO DEL ROJO Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA AZUL, ME MUEVO
 		if (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_AZUL) {
 			ganador = ROJO;
@@ -136,7 +136,7 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 		mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, dir), ROJO, nro_jugador);
 	} else if (this->turno == AZUL && (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_ROJA || es_color_libre(en_posicion(proxima_posicion(posicion_jugador, dir))))) { 
 		// SI ES TURNO DEL AZUL Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA ROJO, ME MUEVO
-		printf("MUEVO JUGADOR - ");
+		printf("MUEVO JUGADOR EQUIPO AZUL - ");
 		if (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_ROJA) {
 			ganador = AZUL;
 			printf("GANADOR\n");
@@ -161,9 +161,9 @@ void gameMaster::termino_ronda(color equipo) {
 	assert(equipo == this->turno);
 	// FIXME: Hacer chequeo que hayan terminado todos los jugadores del equipo o su quantum (via mover_jugador)
 	assert(this->turno == ROJO || this->turno == AZUL);
-	
 	if(this->turno == ROJO) {
 		// printf("jugador del equipo %i cambia de turno y hace wait en el semaforo\n+++++++++++++++++ CAMBIO TURNO +++++++++++++++++\n", equipo);
+		//printf("Soy el rojo");
 		this->turno = AZUL;
 		this->turno_azul.unlock();
 		
@@ -172,6 +172,7 @@ void gameMaster::termino_ronda(color equipo) {
 		}
 		// printf("Vuelve a jugar el equipo %i\n", this->turno);
 	} else if (this->turno == AZUL) {
+		//printf("Soy el azul");
 		// printf("jugador del equipo %i cambia de turno y hace wait en el semaforo\n+++++++++++++++++ CAMBIO TURNO +++++++++++++++++\n", equipo);
 		this->turno = ROJO;
 		this->turno_rojo.unlock();

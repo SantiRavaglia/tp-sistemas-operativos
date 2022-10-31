@@ -35,10 +35,10 @@ void Equipo::jugador(int nro_jugador) {
 
 
 	if (pos_bandera_contraria == make_pair(-1,-1)) {
+		printf("equipo %i\n", this->equipo);
 		buscar_bandera_contraria(nro_jugador);
-		while(pos_bandera_contraria == make_pair(-1,-1)) 
-			;
-		}
+		while(pos_bandera_contraria == make_pair(-1,-1));
+		
 	}
 
 	while(true) { 
@@ -57,7 +57,11 @@ void Equipo::jugador(int nro_jugador) {
 				// printf("jugador nro %i, jugo? -> %i, ya jugaron %i jugadores\n", nro_jugador, ya_jugo[nro_jugador] == true ? 1 : 0, this->cant_jugadores_que_ya_jugaron);
 				if (this->cant_jugadores_que_ya_jugaron < this->cant_jugadores) {
 					if (!ya_jugo[nro_jugador]) {
-						this->belcebu->mover_jugador(apuntar_a(this->posiciones[nro_jugador], this->pos_bandera_contraria),nro_jugador);
+						int movio_jugador = this->belcebu->mover_jugador(apuntar_a(this->posiciones[nro_jugador], this->pos_bandera_contraria),nro_jugador);
+						if(movio_jugador == 0) {
+								this->posiciones[nro_jugador] = this->belcebu->proxima_posicion(this->posiciones[nro_jugador], apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria)) ;
+								// printf("jugador ahora en la posicion (%i, %i)\n", this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second);
+						}
 						this->cant_jugadores_que_ya_jugaron++;
 						ya_jugo[nro_jugador] = true;
 					}
@@ -83,7 +87,11 @@ void Equipo::jugador(int nro_jugador) {
 							this->quantum_restante = this->quantum;
 							this->belcebu->termino_ronda(this->equipo);
 						} else {
-							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
+							int movio_jugador = this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
+							if(movio_jugador == 0) {
+								this->posiciones[nro_jugador] = this->belcebu->proxima_posicion(this->posiciones[nro_jugador], apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria)) ;
+								// printf("jugador ahora en la posicion (%i, %i)\n", this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second);
+							}
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
 						}
@@ -93,7 +101,11 @@ void Equipo::jugador(int nro_jugador) {
 							this->quantum_restante = this->quantum;
 							this->belcebu->termino_ronda(this->equipo);
 						} else {
-							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
+							int movio_jugador = this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
+							if(movio_jugador == 0) {
+								this->posiciones[nro_jugador] = this->belcebu->proxima_posicion(this->posiciones[nro_jugador], apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria)) ;
+								// printf("jugador ahora en la posicion (%i, %i)\n", this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second);
+							}
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
 						}
@@ -126,41 +138,59 @@ void Equipo::jugador(int nro_jugador) {
 				//
 				int movimientos_destinados_a_shortest = this->quantum - this->cant_jugadores;
 				int jugador_a_mover = this->cant_jugadores_que_ya_jugaron % this->cant_jugadores; //si bien esta es la cuenta que se usa cuando el quantum es menor a la cantidad de jugadores, tambien sirve en el otro caso
-				if (jugador_a_mover == nro_jugador){ //chequeo si soy el jugador que debe hacer el movimiento
-					if (this->quantum <= this->cant_jugadores){ //chequeo en cual de los dos casos estoy
-						if(this->cant_jugadores == this->cant_jugadores_que_ya_jugaron){
-							this->cant_jugadores_que_ya_jugaron = 0; //reinicio los valores
-							this->quantum_restante = this->quantum;
-							this->belcebu->termino_ronda(this->equipo);
-						} else {
-							this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
+				if (this->quantum <= this->cant_jugadores){ //chequeo en cual de los dos casos estoy
+					//muevo a todos al menos una vez
+					if(this->cant_jugadores == this->cant_jugadores_que_ya_jugaron){
+						this->cant_jugadores_que_ya_jugaron = 0; //reinicio los valores
+						this->quantum_restante = this->quantum;
+						this->belcebu->termino_ronda(this->equipo);
+					} else {
+						if (jugador_a_mover == nro_jugador){//chequeo si soy el jugador que debe hacer el movimiento
+							int movio_jugador = this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
+							if(movio_jugador == 0) {
+								this->posiciones[nro_jugador] = this->belcebu->proxima_posicion(this->posiciones[nro_jugador], apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria)) ;
+								// printf("jugador ahora en la posicion (%i, %i)\n", this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second);
+							}
 							this->cant_jugadores_que_ya_jugaron++;
 							this->quantum_restante--;
 						}
+						
+					}
+				} else {
+					//round robin
+					if(this->quantum_restante == 0){
+						this->cant_jugadores_que_ya_jugaron = 0; //reinicio los valores
+						this->quantum_restante = this->quantum;
+						this->belcebu->termino_ronda(this->equipo);
 					} else {
-						if(this->quantum_restante == 0){
-							this->cant_jugadores_que_ya_jugaron = 0; //reinicio los valores
-							this->quantum_restante = this->quantum;
-							this->belcebu->termino_ronda(this->equipo);
-						} else {
-							if (movimientos_destinados_a_shortest >= this->quantum_restante){ //destino #quantum - #cantidad_de_jugadores movimientos a shortest y el resto a quantum
-								// printf(" - muevo de al mas cercano\n");
-								int jugador_cercano = this->jugador_mas_cercano(); 
-								if (nro_jugador == jugador_cercano){ //podriamos llegar a implementar un else que duerma a los jugadores que no son el mas cercano, pero complicaria el codigo, puede causar deadlocks y no es mucho mas optimo
-									while(this->quantum_restante > 0 && this->belcebu->ganador == INDEFINIDO) { // lo muevo #quantum - #cantidad_de_jugadores veces
-										this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
+						if (movimientos_destinados_a_shortest >= this->quantum_restante){ //destino #quantum - #cantidad_de_jugadores movimientos a shortest y el resto a quantum
+							// printf(" - muevo de al mas cercano\n");
+							int jugador_cercano = this->jugador_mas_cercano(); 
+							if (nro_jugador == jugador_cercano){ //podriamos llegar a implementar un else que duerma a los jugadores que no son el mas cercano, pero complicaria el codigo, puede causar deadlocks y no es mucho mas optimo
+								while(this->quantum_restante > 0 && !this->belcebu->termino_juego()) { // lo muevo #quantum - #cantidad_de_jugadores veces
+									int movio_jugador = this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
+									if(movio_jugador == 0) {
+										this->posiciones[nro_jugador] = this->belcebu->proxima_posicion(this->posiciones[nro_jugador], apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria)) ;
 										// printf("jugador ahora en la posicion (%i, %i)\n", this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second);
-										this->quantum_restante--;
-										
 									}
-								} 
-							} else {
+									// printf("jugador ahora en la posicion (%i, %i)\n", this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second);
+									this->quantum_restante--;
+									
+								}
+							} 
+						} else {
+							if (jugador_a_mover == nro_jugador){//chequeo si soy el jugador que debe hacer el movimiento
 								//printf(" - muevo de forma secuencial\n");
-								this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
+								int movio_jugador = this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_a_mover], this->pos_bandera_contraria),jugador_a_mover);
+								if(movio_jugador == 0) {
+									this->posiciones[nro_jugador] = this->belcebu->proxima_posicion(this->posiciones[nro_jugador], apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria)) ;
+									// printf("jugador ahora en la posicion (%i, %i)\n", this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second);
+								}
 								// printf("jugador ahora en la posicion (%i, %i)\n", this->posiciones[nro_jugador].first, this->posiciones[nro_jugador].second);
 								this->cant_jugadores_que_ya_jugaron++;
 								this->quantum_restante--;
 							}
+							
 						}
 					}
 				}
@@ -169,15 +199,12 @@ void Equipo::jugador(int nro_jugador) {
 			default:
 				break;
 		}	
-		
+
 		if (this->strat != SHORTEST && this->belcebu->termino_juego()){ //si llegué a la bandera termino la ronda porque gané 
 			this->belcebu->termino_ronda(this->equipo);
 		}
-
 		
-		//this_thread::sleep_for(1000ms);
 		m_turno.unlock();
-		//this_thread::sleep_for(500ms);
 	}
 	
 }
@@ -198,7 +225,7 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	this->ya_jugo = vecAux;
 
 
-	if (strat == SHORTEST) {
+	if (strat == SHORTEST) { //iker
 		this->pos_bandera_contraria = this->buscar_bandera_contraria_single_thread();
 		printf("bandera contraria: (%i, %i)\n", this->pos_bandera_contraria.first, this->pos_bandera_contraria.second);
 	}
@@ -206,6 +233,7 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 
 void Equipo::comenzar() {
 	// Arranco cuando me toque el turno 
+	clock_gettime(CLOCK_REALTIME, &(this->strat_inicio));
 	if(this->equipo == AZUL) (this->belcebu->turno_azul).lock(); // Pongo a esperar el azul y cuando termine el rojo va a iniciar este
 	// Creamos los jugadores
 
@@ -220,10 +248,20 @@ void Equipo::terminar() {
 	for(auto &t:jugadores){
 		t.join();
 	}	
+	clock_gettime(CLOCK_REALTIME, &(this->strat_fin));
+	this->tiempo_strat.first = abs(this->strat_fin.tv_sec - this->strat_inicio.tv_sec);
+	this->tiempo_strat.second = abs(this->strat_fin.tv_nsec - this->strat_inicio.tv_nsec);
+	/*int Ini = this->busqueda_inicio.tv_sec;
+	int IniN = this->busqueda_inicio.tv_nsec;
+	int Fin = this->busqueda_fin.tv_sec;
+	int FinN = this->busqueda_fin.tv_nsec;*/
+	printf("Tiempo total de la estrategia, equipo %i: %i segundos %i nanosegundos\n", this->equipo ,this->tiempo_strat.first, this->tiempo_strat.second);
+
 }
 
 coordenadas Equipo::buscar_bandera_contraria(int nro_jugador) {
 
+	printf("Soy equipo %i", this->equipo);
 	clock_gettime(CLOCK_REALTIME, &(this->busqueda_inicio));
 
 	int tamX = this->belcebu->getTamx();
@@ -333,7 +371,7 @@ coordenadas Equipo::buscar_bandera_contraria_single_thread() {
 // 0 0 0 4 
 // 7 7 5 3 
 
-
+/*
 coordenadas Equipo::buscar_bandera_contraria(int casillaInicio, int cantCasillas) {
 
 	clock_gettime(CLOCK_REALTIME, &(this->busqueda_inicio));
@@ -359,7 +397,7 @@ coordenadas Equipo::buscar_bandera_contraria(int casillaInicio, int cantCasillas
 				this->pos_bandera_contraria = make_pair(i,j);
 				coord_bandera = make_pair(i,j);
 				printf("bandera contraria: (%i, %i)\n", coord_bandera.first, coord_bandera.second);
-			};
+			}
 		}
 		primeraIteracion = false;
 	}
@@ -367,7 +405,7 @@ coordenadas Equipo::buscar_bandera_contraria(int casillaInicio, int cantCasillas
 	FALTA FIJARSE:
 	- Si puedo asignar la bandera del equipo contraria asi nomas o tengo que devolverla al jugador y eso pasarla al belcebu
 	- Agregar algun flag para cortar la iteracion en todos los demas jugadores?
-	*/
+	
 
 	clock_gettime(CLOCK_REALTIME, &(this->busqueda_fin));
 	this->tiempo_busqueda.first = abs(this->busqueda_fin.tv_sec - this->busqueda_inicio.tv_sec);
@@ -379,4 +417,5 @@ coordenadas Equipo::buscar_bandera_contraria(int casillaInicio, int cantCasillas
 	printf("Tiempo de busqueda de bandera: %i segundos %i nanosegundos, inicio: %i - %i , fin: %i - %i \n", this->tiempo_busqueda.first, this->tiempo_busqueda.second, auxIni, auxIniN, auxFin, auxFinN);
 
 	return coord_bandera;
-}
+}*/
+ 
