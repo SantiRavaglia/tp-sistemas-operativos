@@ -19,21 +19,27 @@ direccion Equipo::apuntar_a(coordenadas pos1, coordenadas pos2) {
 
 
 void Equipo::jugador(int nro_jugador) {
-	while(pos_bandera_contraria == make_pair(-1,-1)){
-		int tamX = this->belcebu->getTamx();
-		int tamY = this->belcebu->getTamy();
-		//Que hacer si la division del tablero da un numero con coma?
-		//Redondeo para arriba y algunos jugadores revisas la misma casilla a veces
-		int cantCasillas = (int)ceil((float)(tamX * tamY)/(float)this->cant_jugadores);
-		int casillaInicio = cantCasillas * nro_jugador;
-		// Si algun jugador se pasa del limite del tablero le asignamos tamaño - 1 a su limite
-		if (casillaInicio+cantCasillas >= tamX*tamY){
-			cantCasillas = tamX*tamY - casillaInicio - 1;
+	// while(pos_bandera_contraria == make_pair(-1,-1)){
+	// 	int tamX = this->belcebu->getTamx();
+	// 	int tamY = this->belcebu->getTamy();
+	// 	//Que hacer si la division del tablero da un numero con coma?
+	// 	//Redondeo para arriba y algunos jugadores revisas la misma casilla a veces
+	// 	int cantCasillas = (int)ceil((float)(tamX * tamY)/(float)this->cant_jugadores);
+	// 	int casillaInicio = cantCasillas * nro_jugador;
+	// 	// Si algun jugador se pasa del limite del tablero le asignamos tamaño - 1 a su limite
+	// 	if (casillaInicio+cantCasillas >= tamX*tamY){
+	// 		cantCasillas = tamX*tamY - casillaInicio - 1;
+	// 	}
+	// 	buscar_bandera_contraria(casillaInicio, cantCasillas);
+	// }
+
+
+	if (pos_bandera_contraria == make_pair(-1,-1)) {
+		buscar_bandera_contraria(nro_jugador);
+		while(pos_bandera_contraria == make_pair(-1,-1)) 
+			;
 		}
-		buscar_bandera_contraria(casillaInicio, cantCasillas);
 	}
-
-
 
 	while(true) { 
 
@@ -216,40 +222,33 @@ void Equipo::terminar() {
 	}	
 }
 
-coordenadas Equipo::buscar_bandera_contraria(int casillaInicio, int cantCasillas) {
+coordenadas Equipo::buscar_bandera_contraria(int nro_jugador) {
 
 	clock_gettime(CLOCK_REALTIME, &(this->busqueda_inicio));
 
 	int tamX = this->belcebu->getTamx();
 	int tamY = this->belcebu->getTamy();
-	int filaInicial = casillaInicio/tamX;
-	int columnaInicial = casillaInicio % tamX;
-	int casillaFinal = casillaInicio + cantCasillas;
-	int filaFinal = casillaFinal/tamX;
-	int columnaFinal = casillaFinal % tamX;
-	bool primeraIteracion = true;
 	coordenadas coord_bandera;
-	for (int i = filaInicial; i <= filaFinal; i++){
-		// Tengo que llamar en la primera iteracion desde la columna en la que empiece
-		// y en la ultima iteracion de la columna en la que termino
-		int inicio = 0;
-		int fin = tamY - 1;
-		if (i == filaFinal) fin = columnaFinal; // Ultima fila solo iteramos hasta la columnaFinal del jugador
-		if (primeraIteracion) inicio = columnaInicial;
-		for (int j = inicio ; j <= fin; j++){
-			if(this->belcebu->en_posicion(make_pair(i,j)) == bandera_contraria){
-				this->pos_bandera_contraria = make_pair(i,j);
+
+	int cantColumnas = ceil(tamX / this->cant_jugadores);
+
+	int columnaInicial = nro_jugador * cantColumnas;
+	int columnaFinal = (nro_jugador+1) * cantColumnas;
+
+	for (int i = columnaInicial; i <= columnaFinal; i++) {
+		for (int j = 0; j < tamY; j++) {
+			if ((this->equipo == ROJO && this->belcebu->en_posicion(make_pair(i, j)) == BANDERA_AZUL) ||
+				(this->equipo == AZUL && this->belcebu->en_posicion(make_pair(i, j)) == BANDERA_ROJA)
+				) {
+				this->pos_bandera_contraria = make_pair(i, j);
 				coord_bandera = make_pair(i,j);
-				printf("bandera contraria: (%i, %i)\n", coord_bandera.first, coord_bandera.second);
-			};
+				break;
+			}
 		}
-		primeraIteracion = false;
+		if (this->pos_bandera_contraria != make_pair(-1, -1)) {
+			break;
+		}
 	}
-	/*
-	FALTA FIJARSE:
-	- Si puedo asignar la bandera del equipo contraria asi nomas o tengo que devolverla al jugador y eso pasarla al belcebu
-	- Agregar algun flag para cortar la iteracion en todos los demas jugadores?
-	*/
 
 	clock_gettime(CLOCK_REALTIME, &(this->busqueda_fin));
 	this->tiempo_busqueda.first = abs(this->busqueda_fin.tv_sec - this->busqueda_inicio.tv_sec);
@@ -334,3 +333,50 @@ coordenadas Equipo::buscar_bandera_contraria_single_thread() {
 // 0 0 0 4 
 // 7 7 5 3 
 
+
+coordenadas Equipo::buscar_bandera_contraria(int casillaInicio, int cantCasillas) {
+
+	clock_gettime(CLOCK_REALTIME, &(this->busqueda_inicio));
+
+	int tamX = this->belcebu->getTamx();
+	int tamY = this->belcebu->getTamy();
+	int filaInicial = casillaInicio/tamX;
+	int columnaInicial = casillaInicio % tamX;
+	int casillaFinal = casillaInicio + cantCasillas;
+	int filaFinal = casillaFinal/tamX;
+	int columnaFinal = casillaFinal % tamX;
+	bool primeraIteracion = true;
+	coordenadas coord_bandera;
+	for (int i = filaInicial; i <= filaFinal; i++){
+		// Tengo que llamar en la primera iteracion desde la columna en la que empiece
+		// y en la ultima iteracion de la columna en la que termino
+		int inicio = 0;
+		int fin = tamY - 1;
+		if (i == filaFinal) fin = columnaFinal; // Ultima fila solo iteramos hasta la columnaFinal del jugador
+		if (primeraIteracion) inicio = columnaInicial;
+		for (int j = inicio ; j <= fin; j++){
+			if(this->belcebu->en_posicion(make_pair(i,j)) == bandera_contraria){
+				this->pos_bandera_contraria = make_pair(i,j);
+				coord_bandera = make_pair(i,j);
+				printf("bandera contraria: (%i, %i)\n", coord_bandera.first, coord_bandera.second);
+			};
+		}
+		primeraIteracion = false;
+	}
+	/*
+	FALTA FIJARSE:
+	- Si puedo asignar la bandera del equipo contraria asi nomas o tengo que devolverla al jugador y eso pasarla al belcebu
+	- Agregar algun flag para cortar la iteracion en todos los demas jugadores?
+	*/
+
+	clock_gettime(CLOCK_REALTIME, &(this->busqueda_fin));
+	this->tiempo_busqueda.first = abs(this->busqueda_fin.tv_sec - this->busqueda_inicio.tv_sec);
+	this->tiempo_busqueda.second = abs(this->busqueda_fin.tv_nsec - this->busqueda_inicio.tv_nsec);
+	int auxIni = this->busqueda_inicio.tv_sec;
+	int auxIniN = this->busqueda_inicio.tv_nsec;
+	int auxFin = this->busqueda_fin.tv_sec;
+	int auxFinN = this->busqueda_fin.tv_nsec;
+	printf("Tiempo de busqueda de bandera: %i segundos %i nanosegundos, inicio: %i - %i , fin: %i - %i \n", this->tiempo_busqueda.first, this->tiempo_busqueda.second, auxIni, auxIniN, auxFin, auxFinN);
+
+	return coord_bandera;
+}
