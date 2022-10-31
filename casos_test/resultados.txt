@@ -5,3 +5,8 @@ round_robin_vs_shortest_quantum_5 -> Si corremos round robin gana Azul. Si corre
 estrategia_nuestra -> Con SDF queda trabado en la primera iteracion. Con nuestra estrategia gana ROJO.
 
 caso_azul_2 -> con shortest se queda trabado pero con sequencial/rr/nuestra gana azul
+caso_comun_fila_jugadores -> gana equipo rojo con todas las estrategias, ninguno queda trabado.
+caso_rojo_1 -> gana equipo rojo con cualquier estartegia
+caso_rojo_2 -> gana equipo rojo con cualquier estrategia
+tablero_grande_gana_rojo -> gana rojo con cualquier estartegia tablero 50x50
+tablero_grande_fila_azul_mas_cerca -> gana azul con cualquier estartegia tablero 50x50
