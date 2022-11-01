@@ -251,11 +251,12 @@ void Equipo::terminar() {
 	clock_gettime(CLOCK_REALTIME, &(this->strat_fin));
 	this->tiempo_strat.first = abs(this->strat_fin.tv_sec - this->strat_inicio.tv_sec);
 	this->tiempo_strat.second = abs(this->strat_fin.tv_nsec - this->strat_inicio.tv_nsec);
+	this->tiempo_strat.second = this->tiempo_strat.second/1000000;
 	/*int Ini = this->busqueda_inicio.tv_sec;
 	int IniN = this->busqueda_inicio.tv_nsec;
 	int Fin = this->busqueda_fin.tv_sec;
 	int FinN = this->busqueda_fin.tv_nsec;*/
-	printf("Tiempo total de la estrategia, equipo %i: %i segundos %i nanosegundos\n", this->equipo ,this->tiempo_strat.first, this->tiempo_strat.second);
+	printf("Tiempo total de la estrategia, equipo %i: %i segundos %i milisegundos\n", this->equipo ,this->tiempo_strat.first, this->tiempo_strat.second);
 
 }
 
