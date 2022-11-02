@@ -126,22 +126,22 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 	// printf("proxima posicion: jug n° %i equipo %i en pos (%i, %i) , dir %i \n", nro_jugador, this->turno, posicion_jugador.first, posicion_jugador.second, dir);
 	
 	if (this->turno == ROJO && (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_AZUL || es_color_libre(en_posicion(proxima_posicion(posicion_jugador, dir))))) {
-		printf("MUEVO JUGADOR EQUIPO ROJO - ");
+		//printf("MUEVO JUGADOR EQUIPO ROJO - ");
 		// SI ES TURNO DEL ROJO Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA AZUL, ME MUEVO
 		if (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_AZUL) {
 			ganador = ROJO;
 			printf("GANADOR\n");
 		}
-		printf("(%i, %i) \n", proxima_posicion(posicion_jugador, dir).first, proxima_posicion(posicion_jugador, dir).second);
+		//printf("(%i, %i) \n", proxima_posicion(posicion_jugador, dir).first, proxima_posicion(posicion_jugador, dir).second);
 		mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, dir), ROJO, nro_jugador);
 	} else if (this->turno == AZUL && (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_ROJA || es_color_libre(en_posicion(proxima_posicion(posicion_jugador, dir))))) { 
 		// SI ES TURNO DEL AZUL Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA ROJO, ME MUEVO
-		printf("MUEVO JUGADOR EQUIPO AZUL - ");
+		//printf("MUEVO JUGADOR EQUIPO AZUL - ");
 		if (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_ROJA) {
 			ganador = AZUL;
 			printf("GANADOR\n");
 		} 
-		printf("(%i, %i) \n", proxima_posicion(posicion_jugador, dir).first, proxima_posicion(posicion_jugador, dir).second);
+		//printf("(%i, %i) \n", proxima_posicion(posicion_jugador, dir).first, proxima_posicion(posicion_jugador, dir).second);
 		mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, dir), AZUL, nro_jugador);
 	} else {
 			// NO PUEDO MOVERME

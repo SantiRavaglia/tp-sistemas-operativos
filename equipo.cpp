@@ -35,7 +35,7 @@ void Equipo::jugador(int nro_jugador) {
 
 
 	if (pos_bandera_contraria == make_pair(-1,-1)) {
-		printf("equipo %i\n", this->equipo);
+		//printf("equipo %i\n", this->equipo);
 		buscar_bandera_contraria(nro_jugador);
 		while(pos_bandera_contraria == make_pair(-1,-1));
 		
@@ -121,7 +121,7 @@ void Equipo::jugador(int nro_jugador) {
 				int jugador_cercano = this->jugador_mas_cercano(); 
 				if (nro_jugador == jugador_cercano){ 
 					// printf("entra el jugador mas cercano %i del equipo %i al if\n", nro_jugador, this->equipo);
-					printf("%i - ", this->equipo);
+					//printf("%i - ", this->equipo);
 					int movio_jugador = this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
 					if(movio_jugador == 0) {
 						this->posiciones[nro_jugador] = this->belcebu->proxima_posicion(this->posiciones[nro_jugador], apuntar_a(posiciones[nro_jugador], this->pos_bandera_contraria)) ;
@@ -225,7 +225,7 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	this->ya_jugo = vecAux;
 
 
-	if (strat == SHORTEST) { //iker
+	if (strat == SHORTEST) { 
 		this->pos_bandera_contraria = this->buscar_bandera_contraria_single_thread();
 		printf("bandera contraria: (%i, %i)\n", this->pos_bandera_contraria.first, this->pos_bandera_contraria.second);
 	}
@@ -292,12 +292,13 @@ coordenadas Equipo::buscar_bandera_contraria(int nro_jugador) {
 	clock_gettime(CLOCK_REALTIME, &(this->busqueda_fin));
 	this->tiempo_busqueda.first = abs(this->busqueda_fin.tv_sec - this->busqueda_inicio.tv_sec);
 	this->tiempo_busqueda.second = abs(this->busqueda_fin.tv_nsec - this->busqueda_inicio.tv_nsec);
-	int auxIni = this->busqueda_inicio.tv_sec;
+	/*int auxIni = this->busqueda_inicio.tv_sec;
 	int auxIniN = this->busqueda_inicio.tv_nsec;
 	int auxFin = this->busqueda_fin.tv_sec;
-	int auxFinN = this->busqueda_fin.tv_nsec;
-	printf("Tiempo de busqueda de bandera: %i segundos %i nanosegundos, inicio: %i - %i , fin: %i - %i \n", this->tiempo_busqueda.first, this->tiempo_busqueda.second, auxIni, auxIniN, auxFin, auxFinN);
-
+	int auxFinN = this->busqueda_fin.tv_nsec;*/
+	this->tiempo_busqueda.second = this->tiempo_busqueda.second/1000000;
+	//printf("Tiempo de busqueda de bandera: %i segundos %i nanosegundos, inicio: %i - %i , fin: %i - %i \n", this->tiempo_busqueda.first, this->tiempo_busqueda.second, auxIni, auxIniN, auxFin, auxFinN);		//printf("Tiempo de busqueda de bandera: %i segundos %i nanosegundos, inicio: %i - %i , fin: %i - %i \n", this->tiempo_busqueda.first, this->tiempo_busqueda.second, auxIni, auxIniN, auxFin, auxFinN);
+	printf("Tiempo de busqueda de bandera: %i segundos %i milisegundos\n", this->tiempo_busqueda.first, this->tiempo_busqueda.second);
 	return coord_bandera;
 }
 
@@ -354,12 +355,13 @@ coordenadas Equipo::buscar_bandera_contraria_single_thread() {
 	clock_gettime(CLOCK_REALTIME, &(this->busqueda_fin));
 	this->tiempo_busqueda.first = abs(this->busqueda_fin.tv_sec - this->busqueda_inicio.tv_sec);
 	this->tiempo_busqueda.second = abs(this->busqueda_fin.tv_nsec - this->busqueda_inicio.tv_nsec);
-	int auxIni = this->busqueda_inicio.tv_sec;
+	/*int auxIni = this->busqueda_inicio.tv_sec;
 	int auxIniN = this->busqueda_inicio.tv_nsec;
 	int auxFin = this->busqueda_fin.tv_sec;
-	int auxFinN = this->busqueda_fin.tv_nsec;
-	printf("Tiempo de busqueda de bandera: %i segundos %i nanosegundos, inicio: %i - %i , fin: %i - %i \n", this->tiempo_busqueda.first, this->tiempo_busqueda.second, auxIni, auxIniN, auxFin, auxFinN);
-
+	int auxFinN = this->busqueda_fin.tv_nsec;*/
+	this->tiempo_busqueda.second = this->tiempo_busqueda.second/1000000;
+	//printf("Tiempo de busqueda de bandera: %i segundos %i nanosegundos, inicio: %i - %i , fin: %i - %i \n", this->tiempo_busqueda.first, this->tiempo_busqueda.second, auxIni, auxIniN, auxFin, auxFinN);
+	printf("Tiempo de busqueda de bandera: %i segundos %i milisegundos\n", this->tiempo_busqueda.first, this->tiempo_busqueda.second);
 	return coord_bandera;
 }
 

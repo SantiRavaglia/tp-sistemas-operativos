@@ -17,7 +17,7 @@
 using namespace std;
 
 
-const estrategia strat = RR;
+const estrategia strat = SHORTEST;
 
 int main(){
     Config config = *(new Config());
