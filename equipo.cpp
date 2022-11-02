@@ -57,7 +57,6 @@ void Equipo::jugador(int nro_jugador) {
 						elem = false;
 					}
 					this->belcebu->termino_ronda(this->equipo);
-					// Hay que refreshear el quantum/jugadores que ya jugaron al principio de la ronda
 				}
 				break;
 			}
@@ -97,8 +96,7 @@ void Equipo::jugador(int nro_jugador) {
 			}
 
 			case(SHORTEST): {
-			// 	Tengo que ver de donde saco la dist a la bandera
-			// Si esta es la strat tengo que asegurarme de llamar al de menor dist
+				//tengo que asegurarme de llamar al de menor dist
 				int jugador_cercano = this->jugador_mas_cercano(); 
 				if (nro_jugador == jugador_cercano){ 
 					int movio_jugador = this->belcebu->mover_jugador(apuntar_a(posiciones[jugador_cercano], this->pos_bandera_contraria), jugador_cercano);
@@ -198,7 +196,7 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	this->ya_jugo = vecAux;
 
 
-	if (strat == SHORTEST) { 
+	if (strat == SHORTEST) {  //Usamos shortest siempre con busqeda single thread 
 		this->pos_bandera_contraria = this->buscar_bandera_contraria_single_thread();
 		printf("bandera contraria: (%i, %i)\n", this->pos_bandera_contraria.first, this->pos_bandera_contraria.second);
 	}
@@ -208,9 +206,8 @@ void Equipo::comenzar() {
 	// Arranco cuando me toque el turno 
 	clock_gettime(CLOCK_REALTIME, &(this->strat_inicio));
 	if(this->equipo == AZUL) (this->belcebu->turno_azul).lock(); // Pongo a esperar el azul y cuando termine el rojo va a iniciar este
+	
 	// Creamos los jugadores
-
-
 	for(int i=0; i < cant_jugadores; i++) {
 		jugadores.emplace_back(thread(&Equipo::jugador, this, i)); 
 	}

@@ -195,7 +195,7 @@ coordenadas gameMaster::proxima_posicion(coordenadas anterior, direccion movimie
 			anterior.first++;
 			break;
 	}
-	return anterior; // está haciendo una copia por constructor
+	return anterior;
 }
 
 void gameMaster::update_quantum(int quantum_actual, color equipo_actual) {
