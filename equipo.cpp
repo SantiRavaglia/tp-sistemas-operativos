@@ -198,7 +198,7 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	this->ya_jugo = vecAux;
 
 
-	if (strat == SHORTEST) { //iker
+	if (strat == SHORTEST) { 
 		this->pos_bandera_contraria = this->buscar_bandera_contraria_single_thread();
 		printf("bandera contraria: (%i, %i)\n", this->pos_bandera_contraria.first, this->pos_bandera_contraria.second);
 	}
@@ -263,10 +263,6 @@ coordenadas Equipo::buscar_bandera_contraria(int nro_jugador) {
 	clock_gettime(CLOCK_REALTIME, &(this->busqueda_fin));
 	this->tiempo_busqueda.first = abs(this->busqueda_fin.tv_sec - this->busqueda_inicio.tv_sec);
 	this->tiempo_busqueda.second = abs(this->busqueda_fin.tv_nsec - this->busqueda_inicio.tv_nsec);
-	int auxIni = this->busqueda_inicio.tv_sec;
-	int auxIniN = this->busqueda_inicio.tv_nsec;
-	int auxFin = this->busqueda_fin.tv_sec;
-	int auxFinN = this->busqueda_fin.tv_nsec;
 	printf("Tiempo de busqueda de bandera: %i segundos %i nanosegundos\n", this->tiempo_busqueda.first, this->tiempo_busqueda.second);
 
 	return coord_bandera;
