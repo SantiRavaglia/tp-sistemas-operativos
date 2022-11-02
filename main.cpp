@@ -17,7 +17,7 @@
 using namespace std;
 
 
-const estrategia strat = RR;
+const estrategia strat = SECUENCIAL;
 
 int main(){
     Config config = *(new Config());

@@ -96,7 +96,6 @@ gameMaster::gameMaster(Config config) {
 	this->turno_rojo.lock();
 
     cout << "SE HA INICIALIZADO GAMEMASTER CON EXITO" << endl;
-	printf("turno inicial: %i \n", turno_init);
     // Insertar código que crea necesario de inicialización 
 }
 
@@ -123,28 +122,26 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 		posicion_jugador = this->pos_jugadores_azules[nro_jugador];
 	}
 
-	// printf("proxima posicion: jug n° %i equipo %i en pos (%i, %i) , dir %i \n", nro_jugador, this->turno, posicion_jugador.first, posicion_jugador.second, dir);
 	
 	if (this->turno == ROJO && (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_AZUL || es_color_libre(en_posicion(proxima_posicion(posicion_jugador, dir))))) {
-		printf("MUEVO JUGADOR EQUIPO ROJO - ");
 		// SI ES TURNO DEL ROJO Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA AZUL, ME MUEVO
+		printf("MUEVO JUGADOR %i EQUIPO ROJO - AHORA EN POSICION (%i, %i) \n", nro_jugador, proxima_posicion(posicion_jugador, dir).first, proxima_posicion(posicion_jugador, dir).second);
 		if (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_AZUL) {
 			ganador = ROJO;
-			printf("GANADOR\n");
+			printf("GANADOR JUGADOR %i EQUIPO ROJO\n", nro_jugador);
 		}
-		printf("(%i, %i) \n", proxima_posicion(posicion_jugador, dir).first, proxima_posicion(posicion_jugador, dir).second);
 		mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, dir), ROJO, nro_jugador);
 	} else if (this->turno == AZUL && (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_ROJA || es_color_libre(en_posicion(proxima_posicion(posicion_jugador, dir))))) { 
 		// SI ES TURNO DEL AZUL Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA ROJO, ME MUEVO
-		printf("MUEVO JUGADOR EQUIPO AZUL - ");
+		printf("MUEVO JUGADOR %i EQUIPO AZUL - AHORA EN POSICION (%i, %i)\n", nro_jugador, proxima_posicion(posicion_jugador, dir).first, proxima_posicion(posicion_jugador, dir).second);
 		if (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_ROJA) {
 			ganador = AZUL;
-			printf("GANADOR\n");
+			printf("GANADOR JUGADOR %i EQUIPO AZUL\n", nro_jugador);
 		} 
-		printf("(%i, %i) \n", proxima_posicion(posicion_jugador, dir).first, proxima_posicion(posicion_jugador, dir).second);
 		mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, dir), AZUL, nro_jugador);
 	} else {
 			// NO PUEDO MOVERME
+			printf("JUGADOR %i EQUIPO %s NO SE MOVIO - ALGO BLOQUEA EL CAMINO\n", nro_jugador, this->turno == 0 ? "AZUL" : "ROJO");
 			movimiento_valido = -1;
 	}
 
@@ -156,31 +153,22 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 
 
 void gameMaster::termino_ronda(color equipo) {
-	// FIXME: Hacer chequeo de que es el color correcto que está llamando
-	// printf("color equipo: %i, color llamador: %i\n", this->turno, equipo);
 	assert(equipo == this->turno);
-	// FIXME: Hacer chequeo que hayan terminado todos los jugadores del equipo o su quantum (via mover_jugador)
 	assert(this->turno == ROJO || this->turno == AZUL);
 	if(this->turno == ROJO) {
-		// printf("jugador del equipo %i cambia de turno y hace wait en el semaforo\n+++++++++++++++++ CAMBIO TURNO +++++++++++++++++\n", equipo);
-		//printf("Soy el rojo");
 		this->turno = AZUL;
 		this->turno_azul.unlock();
 		
 		if (ganador == INDEFINIDO){
 			this->turno_rojo.lock();
 		}
-		// printf("Vuelve a jugar el equipo %i\n", this->turno);
 	} else if (this->turno == AZUL) {
-		//printf("Soy el azul");
-		// printf("jugador del equipo %i cambia de turno y hace wait en el semaforo\n+++++++++++++++++ CAMBIO TURNO +++++++++++++++++\n", equipo);
 		this->turno = ROJO;
 		this->turno_rojo.unlock();
 		
 		if (ganador == INDEFINIDO){
 			this->turno_azul.lock();
 		}
-		// printf("Vuelve a jugar el equipo %i\n", this->turno);
 	}
 }
 
