@@ -125,7 +125,7 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 	
 	if (this->turno == ROJO && (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_AZUL || es_color_libre(en_posicion(proxima_posicion(posicion_jugador, dir))))) {
 		// SI ES TURNO DEL ROJO Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA AZUL, ME MUEVO
-		printf("MUEVO JUGADOR %i EQUIPO ROJO - AHORA EN POSICION (%i, %i) \n", nro_jugador, proxima_posicion(posicion_jugador, dir).first, proxima_posicion(posicion_jugador, dir).second);
+		//printf("MUEVO JUGADOR %i EQUIPO ROJO - AHORA EN POSICION (%i, %i) \n", nro_jugador, proxima_posicion(posicion_jugador, dir).first, proxima_posicion(posicion_jugador, dir).second);
 		if (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_AZUL) {
 			ganador = ROJO;
 			printf("GANADOR JUGADOR %i EQUIPO ROJO\n", nro_jugador);
@@ -133,7 +133,7 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 		mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, dir), ROJO, nro_jugador);
 	} else if (this->turno == AZUL && (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_ROJA || es_color_libre(en_posicion(proxima_posicion(posicion_jugador, dir))))) { 
 		// SI ES TURNO DEL AZUL Y EN LA COORDENADA A LA QUE SE QUIERE MOVER EL JUGADOR ES COLOR LIBRE O HAY BANDERA ROJO, ME MUEVO
-		printf("MUEVO JUGADOR %i EQUIPO AZUL - AHORA EN POSICION (%i, %i)\n", nro_jugador, proxima_posicion(posicion_jugador, dir).first, proxima_posicion(posicion_jugador, dir).second);
+		//printf("MUEVO JUGADOR %i EQUIPO AZUL - AHORA EN POSICION (%i, %i)\n", nro_jugador, proxima_posicion(posicion_jugador, dir).first, proxima_posicion(posicion_jugador, dir).second);
 		if (en_posicion(proxima_posicion(posicion_jugador, dir)) == BANDERA_ROJA) {
 			ganador = AZUL;
 			printf("GANADOR JUGADOR %i EQUIPO AZUL\n", nro_jugador);
@@ -141,7 +141,7 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 		mover_jugador_tablero(posicion_jugador, proxima_posicion(posicion_jugador, dir), AZUL, nro_jugador);
 	} else {
 			// NO PUEDO MOVERME
-			printf("JUGADOR %i EQUIPO %s NO SE MOVIO - ALGO BLOQUEA EL CAMINO\n", nro_jugador, this->turno == 0 ? "AZUL" : "ROJO");
+			//printf("JUGADOR %i EQUIPO %s NO SE MOVIO - ALGO BLOQUEA EL CAMINO\n", nro_jugador, this->turno == 0 ? "AZUL" : "ROJO");
 			movimiento_valido = -1;
 	}
 

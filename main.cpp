@@ -31,7 +31,6 @@ int main(){
     Equipo azul(&belcebu, AZUL, strat, config.cantidad_jugadores, quantum, config.pos_azul);
     
 
-    sleep(1);
     rojo.comenzar();
     azul.comenzar();
 	rojo.terminar();
