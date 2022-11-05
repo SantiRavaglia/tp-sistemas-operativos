@@ -17,7 +17,7 @@
 using namespace std;
 
 
-const estrategia strat = SECUENCIAL;
+const estrategia strat = USTEDES;
 const tipo_busqueda busqueda = MULTI_THREAD; // elegir entre MULTI_THREAD o SINGLE_THREAD
 
 int main(){
@@ -26,7 +26,7 @@ int main(){
     gameMaster belcebu = gameMaster(config);
 
 	// Creo equipos (lanza procesos)
-	int quantum = 5;
+	int quantum = 22;
 	
     Equipo rojo(&belcebu, ROJO, strat, busqueda, config.cantidad_jugadores, quantum, config.pos_rojo);
     Equipo azul(&belcebu, AZUL, strat, busqueda, config.cantidad_jugadores, quantum, config.pos_azul);

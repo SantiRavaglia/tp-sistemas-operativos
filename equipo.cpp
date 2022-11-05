@@ -22,7 +22,7 @@ void Equipo::jugador(int nro_jugador) {
 
 
 	if (pos_bandera_contraria == make_pair(-1,-1)) {
-		this->busqueda == MULTI_THREAD : buscar_bandera_contraria(nro_jugador) ? buscar_bandera_contraria_single_thread(nro_jugador);
+		this->busqueda == MULTI_THREAD ? buscar_bandera_contraria(nro_jugador) : buscar_bandera_contraria_single_thread();
 		while(pos_bandera_contraria == make_pair(-1,-1));
 		
 	}
