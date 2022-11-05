@@ -22,7 +22,7 @@ void Equipo::jugador(int nro_jugador) {
 
 
 	if (pos_bandera_contraria == make_pair(-1,-1)) {
-		buscar_bandera_contraria(nro_jugador);
+		this->busqueda == MULTI_THREAD : buscar_bandera_contraria(nro_jugador) ? buscar_bandera_contraria_single_thread(nro_jugador);
 		while(pos_bandera_contraria == make_pair(-1,-1));
 		
 	}
@@ -181,12 +181,13 @@ void Equipo::jugador(int nro_jugador) {
 }
 
 Equipo::Equipo(gameMaster *belcebu, color equipo, 
-		estrategia strat, int cant_jugadores, int quantum, vector<coordenadas> posiciones) {
+		estrategia strat, tipo_busqueda busqueda, int cant_jugadores, int quantum, vector<coordenadas> posiciones) {
 	this->belcebu = belcebu;
 	this->equipo = equipo;
 	this->contrario = (equipo == ROJO)? AZUL: ROJO;
 	this->bandera_contraria = (equipo==ROJO)? BANDERA_AZUL: BANDERA_ROJA;
 	this->strat = strat;
+	this->busqueda = busqueda;
 	this->quantum = quantum;
 	this->quantum_restante = quantum;
 	this->cant_jugadores = cant_jugadores;
@@ -195,11 +196,6 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	vector<bool> vecAux (cant_jugadores,false);
 	this->ya_jugo = vecAux;
 
-
-	if (strat == SHORTEST) {  //Usamos shortest siempre con busqeda single thread 
-		this->pos_bandera_contraria = this->buscar_bandera_contraria_single_thread();
-		printf("bandera contraria: (%i, %i)\n", this->pos_bandera_contraria.first, this->pos_bandera_contraria.second);
-	}
 }
 
 void Equipo::comenzar() {

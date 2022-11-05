@@ -18,6 +18,7 @@ class Equipo {
 		gameMaster *belcebu; 
 		color contrario, equipo, bandera_contraria;
 		estrategia strat;
+		tipo_busqueda busqueda;
 		int cant_jugadores, quantum, quantum_restante;
 		vector<thread> jugadores;
 		int cant_jugadores_que_ya_jugaron = 0;
@@ -35,7 +36,7 @@ class Equipo {
 		// Métodos privados 
 		direccion apuntar_a(coordenadas pos2, coordenadas pos1);
 		void jugador(int nro_jugador);
-		coordenadas buscar_bandera_contraria(int casillaInicio);
+		coordenadas buscar_bandera_contraria(int nro_jugador);
 		coordenadas buscar_bandera_contraria_single_thread();
 		int jugador_mas_cercano();
 		//
@@ -47,7 +48,7 @@ class Equipo {
 		vector<bool> ya_jugo;
 
 		Equipo(gameMaster *belcebu, color equipo, 
-				estrategia strat, int cant_jugadores, int quantum, vector<coordenadas> posiciones);
+				estrategia strat, tipo_busqueda busqueda, int cant_jugadores, int quantum, vector<coordenadas> posiciones);
 		void comenzar();
 		void terminar();
 		mutex m_turno;

@@ -18,6 +18,7 @@ using namespace std;
 
 
 const estrategia strat = SECUENCIAL;
+const tipo_busqueda busqueda = MULTI_THREAD; // elegir entre MULTI_THREAD o SINGLE_THREAD
 
 int main(){
     Config config = *(new Config());
@@ -27,8 +28,8 @@ int main(){
 	// Creo equipos (lanza procesos)
 	int quantum = 5;
 	
-    Equipo rojo(&belcebu, ROJO, strat, config.cantidad_jugadores, quantum, config.pos_rojo);
-    Equipo azul(&belcebu, AZUL, strat, config.cantidad_jugadores, quantum, config.pos_azul);
+    Equipo rojo(&belcebu, ROJO, strat, busqueda, config.cantidad_jugadores, quantum, config.pos_rojo);
+    Equipo azul(&belcebu, AZUL, strat, busqueda, config.cantidad_jugadores, quantum, config.pos_azul);
     
 
     rojo.comenzar();
