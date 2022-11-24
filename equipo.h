@@ -20,7 +20,7 @@ class Equipo {
 		estrategia strat;
 		tipo_busqueda busqueda;
 		int cant_jugadores, quantum, quantum_restante;
-		vector<thread> jugadores;
+		vector<thread> jugadores, threads_bandera;
 		int cant_jugadores_que_ya_jugaron = 0;
 		vector<coordenadas> posiciones;
 		coordenadas pos_bandera_contraria;

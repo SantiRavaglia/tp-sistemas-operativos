@@ -20,17 +20,6 @@ direccion Equipo::apuntar_a(coordenadas pos1, coordenadas pos2) {
 
 void Equipo::jugador(int nro_jugador) {
 
-
-	if (pos_bandera_contraria == make_pair(-1,-1)) {
-		if(this->busqueda == MULTI_THREAD)  {
-			thread t(&Equipo::buscar_bandera_contraria, this, nro_jugador);
-			t.join();
-		} else {
-			thread t(&Equipo::buscar_bandera_contraria_single_thread, this);
-			t.join();
-		}
-	}
-
 	while(true) { 
 
 		// detengo a los jugadores para que jueguen de a uno
@@ -44,7 +33,7 @@ void Equipo::jugador(int nro_jugador) {
 
 		switch(this->strat) {
 			//SECUENCIAL,RR,SHORTEST,USTEDES
-			case(SECUENCIAL): { // AGREGAR BARRERA: DESPUES DE MOVERSE HACE BARRERA.WAIT ASI CADA JUGADOR SE MUEVE SOLO UNA VEZ.
+			case(SECUENCIAL): { 
 				if (this->cant_jugadores_que_ya_jugaron < this->cant_jugadores) {
 					if (!ya_jugo[nro_jugador]) {
 						int movio_jugador = this->belcebu->mover_jugador(apuntar_a(this->posiciones[nro_jugador], this->pos_bandera_contraria),nro_jugador);
@@ -199,6 +188,17 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 	this->pos_bandera_contraria = make_pair(-1,-1);
 	vector<bool> vecAux (cant_jugadores,false);
 	this->ya_jugo = vecAux;
+
+	if(this->busqueda == MULTI_THREAD)  {
+		for(int i = 0; i < this->cant_jugadores; i++) {
+			this->threads_bandera.emplace_back(thread(&Equipo::buscar_bandera_contraria, this, i));
+		}
+		for (auto &t : this->threads_bandera) {
+			t.join();
+		}
+	} else {
+		buscar_bandera_contraria_single_thread();
+	}
 
 }
 
