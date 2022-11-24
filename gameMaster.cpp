@@ -92,8 +92,8 @@ gameMaster::gameMaster(Config config) {
 	color turno_init = ROJO;
 	this->turno = turno_init;
 
-	this->turno_azul.lock();
-	this->turno_rojo.lock();
+	this->turno_azul.acquire();
+	this->turno_rojo.acquire();
 
     cout << "SE HA INICIALIZADO GAMEMASTER CON EXITO" << endl;
     // Insertar código que crea necesario de inicialización 
@@ -114,6 +114,9 @@ void gameMaster::mover_jugador_tablero(coordenadas pos_anterior, coordenadas pos
 
 int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 	// Chequear que la movida sea valida
+
+	this->mov_jugador.lock();
+
 	int movimiento_valido = 0;
 	coordenadas posicion_jugador;
 	if (turno == ROJO) {
@@ -148,6 +151,9 @@ int gameMaster::mover_jugador(direccion dir, int nro_jugador) {
 	// Que no se puedan mover 2 jugadores a la vez
     // setear la variable ganador
     // Devolver acorde a la descripción
+
+	this->mov_jugador.unlock();
+
 	return movimiento_valido;
 }
 
@@ -157,17 +163,17 @@ void gameMaster::termino_ronda(color equipo) {
 	assert(this->turno == ROJO || this->turno == AZUL);
 	if(this->turno == ROJO) {
 		this->turno = AZUL;
-		this->turno_azul.unlock();
+		this->turno_azul.release();
 		
 		if (ganador == INDEFINIDO){
-			this->turno_rojo.lock();
+			this->turno_rojo.acquire();
 		}
 	} else if (this->turno == AZUL) {
 		this->turno = ROJO;
-		this->turno_rojo.unlock();
+		this->turno_rojo.release();
 		
 		if (ganador == INDEFINIDO){
-			this->turno_azul.lock();
+			this->turno_azul.acquire();
 		}
 	}
 }

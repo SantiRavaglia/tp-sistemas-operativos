@@ -8,6 +8,7 @@
 #include "definiciones.h"
 #include "config.h"
 #include <thread>
+#include <semaphore>
 
 using namespace std;
 
@@ -44,7 +45,9 @@ public:
     //...
     //
 
-    mutex turno_rojo, turno_azul;
+    // mutex turno_rojo, turno_azul;
+    std::binary_semaphore turno_rojo{1}, turno_azul{1};
+    mutex mov_jugador;
 
     // Métodos públicos
     void termino_ronda(color equipo); // Marca que un jugador terminó la ronda

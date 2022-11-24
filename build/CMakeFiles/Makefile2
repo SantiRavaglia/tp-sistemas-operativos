@@ -54,10 +54,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ignacio/Desktop/tp/tp-sistemas-operativos
+CMAKE_SOURCE_DIR = /home/santiago/Desktop/tp-sistemas-operativos
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ignacio/Desktop/tp/tp-sistemas-operativos/build
+CMAKE_BINARY_DIR = /home/santiago/Desktop/tp-sistemas-operativos/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -81,14 +81,14 @@ clean: CMakeFiles/test_tp_sistemas.dir/clean
 CMakeFiles/test_tp_sistemas.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_tp_sistemas.dir/build.make CMakeFiles/test_tp_sistemas.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_tp_sistemas.dir/build.make CMakeFiles/test_tp_sistemas.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ignacio/Desktop/tp/tp-sistemas-operativos/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target test_tp_sistemas"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/santiago/Desktop/tp-sistemas-operativos/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target test_tp_sistemas"
 .PHONY : CMakeFiles/test_tp_sistemas.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/test_tp_sistemas.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignacio/Desktop/tp/tp-sistemas-operativos/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/santiago/Desktop/tp-sistemas-operativos/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_tp_sistemas.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignacio/Desktop/tp/tp-sistemas-operativos/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/santiago/Desktop/tp-sistemas-operativos/build/CMakeFiles 0
 .PHONY : CMakeFiles/test_tp_sistemas.dir/rule
 
 # Convenience name for target.

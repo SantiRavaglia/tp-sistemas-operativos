@@ -22,9 +22,13 @@ void Equipo::jugador(int nro_jugador) {
 
 
 	if (pos_bandera_contraria == make_pair(-1,-1)) {
-		this->busqueda == MULTI_THREAD ? buscar_bandera_contraria(nro_jugador) : buscar_bandera_contraria_single_thread();
-		while(pos_bandera_contraria == make_pair(-1,-1));
-		
+		if(this->busqueda == MULTI_THREAD)  {
+			thread t(&Equipo::buscar_bandera_contraria, this, nro_jugador);
+			t.join();
+		} else {
+			thread t(&Equipo::buscar_bandera_contraria_single_thread, this);
+			t.join();
+		}
 	}
 
 	while(true) { 
@@ -34,7 +38,7 @@ void Equipo::jugador(int nro_jugador) {
 
 		if(this->belcebu->termino_juego()) { // si habia jugadores en el mutex y el que estaba jugando ganó, se termina la partida
 			m_turno.unlock();
-			this->equipo == ROJO ? this->belcebu->turno_rojo.unlock() : this->belcebu->turno_azul.unlock();
+			this->equipo == ROJO ? this->belcebu->turno_rojo.release() : this->belcebu->turno_azul.release();
 			break;
 		}
 
@@ -201,7 +205,7 @@ Equipo::Equipo(gameMaster *belcebu, color equipo,
 void Equipo::comenzar() {
 	// Arranco cuando me toque el turno 
 	clock_gettime(CLOCK_REALTIME, &(this->strat_inicio));
-	if(this->equipo == AZUL) (this->belcebu->turno_azul).lock(); // Pongo a esperar el azul y cuando termine el rojo va a iniciar este
+	if(this->equipo == AZUL) (this->belcebu->turno_azul).acquire(); // Pongo a esperar el azul y cuando termine el rojo va a iniciar este
 	
 	// Creamos los jugadores
 	for(int i=0; i < cant_jugadores; i++) {
